@@ -4,11 +4,16 @@
 <p>Oh no Dont show page</p>
 {% else %}
 
-<h2>Register</h2>
+<div class="pageTitle">Register</div>
+{% if userExists %}
+<span class="error">User already exists. Please pick another username.</span><br><br>
+{% else %}
+<br><br>
+{% endif %}
 <form action="/register/" method="POST">
   <input type="username" name="username" placeholder="Username">
   <input type="password" name="password" placeholder="Password">
-  <input type="submit" value="Log in">
+  <input type="submit" value="Create Account">
 </form>
 {% endif %}
 {% endblock %}

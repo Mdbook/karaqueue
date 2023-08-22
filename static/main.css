@@ -1,0 +1,32 @@
+html,body {
+    background:#292929;
+    color:white;
+}
+a {
+    color:lightblue;
+}
+.button {
+    text-decoration:none;
+    padding:10px;
+    cursor:pointer;
+    background: #264c58;
+    border-radius:3px;
+    border:1px solid lightgray;
+}
+.error {
+    color:rgb(222, 116, 116);
+}
+.pageTitle {
+    font-size:40px;
+}
+input {
+    color: white;
+    background:#3e3e3e;
+    border:1px solid lightgray;
+    border-radius:1px;
+    padding:4px;
+}
+hr{
+    background:gray;
+    border:1px solid gray;
+}

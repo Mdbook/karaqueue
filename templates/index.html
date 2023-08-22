@@ -6,18 +6,19 @@
 	<h3>{{data}}</h3>
 	{% else %}
 
-	<a href="/logout">Logout</a> <br> <br>
-	<form action="" method="POST">
-	  <input type="username" name="username" placeholder="Instagram Username">
-	  <input type="submit" value="Finds">
-	</form>
+	Logged in as {{session['username']}} | <a href="/logout">Logout</a> <br> <br>
+    <a class="button" href="/songreq">Request a Song</a>
+    {% if session['admin'] %}
+    <a class="button" href="/admin">Admin Portal</a> 
+    {% endif %}
+	
 	{% endif %}
 
 {% else %}
-<p>Not login!</p>
+<p>Welcome to KaraQueue!</p>
 
-<a href="/login">Login</a> 
-<a href="/register">Register</a>
+<a class="button" href="/login">Returning User</a> 
+<a class="button" href="/register">New User</a>
 
 {% endif %}
 {% endblock %}
