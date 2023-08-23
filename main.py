@@ -21,6 +21,17 @@ def home():
             return render_template('index.html', data=get_followed_by(username))
         return render_template('index.html')
 
+@app.route('/users', methods=['GET', 'POST'])
+def users():
+    if session['logged_in']:
+        if request.method == 'GET':
+            return render_template('users.html')
+        else:
+            pass
+            #handle user data here
+    else:
+        return 'Unauthorized', 503
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():

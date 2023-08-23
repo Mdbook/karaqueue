@@ -27,5 +27,5 @@ def test_admin():
             data.admin = True
             db.session.commit()
             print("Created default admin user account")
-        else:
-            print(data.admin)
+        # else:
+        #     print(data.admin)
