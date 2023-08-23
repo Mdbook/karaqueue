@@ -4,9 +4,9 @@
 
 <button onclick="clear_queue()">Clear Queue</button>
 
-<div id="queue_list">
+<ul id="queue_list">
    
-</div>
+</ul>
 <script type="text/javascript" charset="utf-8">
     var socket = io();
     function clear_queue(){
@@ -20,12 +20,19 @@
     socket.on('Queue Init', function(data){
         console.log(data);
         iterate(data)
+        init_sortable()
     });
     socket.on('Queue Update', function(data){
         console.log(data)
         iterate(data)
         
     });
+
+    function init_sortable(){
+        var el = document.getElementById('queue_list');
+        var sortable = Sortable.create(el);
+    }
+
     function iterate(queue){
         clearQueueList();
         console.log(Object.keys(queue['list']).length)
@@ -48,6 +55,7 @@
     //         addUserItem(user)
     //     }
     // });
+    
 
     function clearQueueList(){
         queuelist = document.getElementById('queue_list')
@@ -61,23 +69,9 @@
 
     function addQueueItem(username){
         queuelist = document.getElementById('queue_list');
-        label = document.createElement('span');
-        divider = document.createElement('span');
+        label = document.createElement('li');
         label.innerText = username;
-        divider.innerText = " | ";
-        deletebutton = document.createElement('button');
-        deletebutton.innerText = "Delete";
-        deletebutton.setAttribute('username', username);
-        deletebutton.addEventListener('click', function(e){
-            if (confirm("Are you sure you want to delete the user " + username + "?")){
-                delUser(e.target.getAttribute('username'));
-            }
-        })
-        div = document.createElement('div');
-        div.appendChild(label);
-        div.appendChild(divider);
-        div.appendChild(deletebutton);
-        queuelist.appendChild(div);
+        queuelist.appendChild(label)
         console.log('done');
     }
 </script>
