@@ -1,6 +1,7 @@
 
 from flask_sqlalchemy import SQLAlchemy
 from app import app
+# from socket_worker import update_users
 db = SQLAlchemy(app)
 class User(db.Model):
     """ Create user table"""
@@ -27,5 +28,8 @@ def test_admin():
             data.admin = True
             db.session.commit()
             print("Created default admin user account")
+        # print(data)
         # else:
         #     print(data.admin)
+
+

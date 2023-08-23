@@ -1,31 +1,31 @@
 
 from flask import url_for, render_template, request, redirect, session
+from flask_socketio import SocketIO
 
 # from instagram import get_followed_by, get_user_name
-from app import app
 from users import User, db, test_admin
-
+from socket_worker import socketapp, app, create_user
     # default_admin = User(
     #     username="admin",
     #     password="admin")
 
+test = ["a", "b", "e"]
 
-@app.route('/', methods=['GET', 'POST'])
+
+
+@app.route('/')
 def home():
+    global test
+    test = ["a", "b", "c"]
     """ Session control"""
-    if not session.get('logged_in'):
-        return render_template('index.html')
-    else:
-        if request.method == 'POST':
-            username = get_user_name(request.form['username'])
-            return render_template('index.html', data=get_followed_by(username))
-        return render_template('index.html')
+    return render_template('index.html')
 
 @app.route('/users', methods=['GET', 'POST'])
 def users():
+    global test
     if session['logged_in']:
         if request.method == 'GET':
-            return render_template('users.html')
+            return render_template('users.html', test=test)
         else:
             pass
             #handle user data here
@@ -62,11 +62,7 @@ def register():
         if data is not None:
             return render_template('register.html', userExists=True)
         else:
-            new_user = User(
-                username=request.form['username'],
-                password=request.form['password'])
-            db.session.add(new_user)
-            db.session.commit()
+            create_user(request.form['username'], request.form['password'])
             return render_template('login.html')
     return render_template('register.html')
 
@@ -83,5 +79,10 @@ if __name__ == '__main__':
     db.create_all()
     test_admin()
     app.secret_key = "123"
-    app.run(host='0.0.0.0')
+    socketapp.run(app, host="0.0.0.0")
 
+
+
+# @socketio.on('my event')
+# def handle_my_custom_event(json):
+#     print('received json: ' + str(json))
