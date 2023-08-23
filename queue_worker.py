@@ -3,10 +3,11 @@ from flask_socketio import send, emit, disconnect
 from id_gen import generate_id
 from socket_worker import socketapp, authenticated_only, admin_only
 from flask import session
+DEFAULT_QUEUE = "{\"order\":[],\"list\":{},\"inactive\":[]}"
 
 if not os.path.exists("data/queue.json"):
     f = open("data/queue.json", "w")
-    f.write("{\"order\":[],\"list\":{}}")
+    f.write(DEFAULT_QUEUE)
     f.close()
 
 f = open('data/queue.json', 'r')
@@ -24,6 +25,7 @@ class Request():
         self.song = sng
         self.author = ath
         self.timestamp = time.time()
+        # self.active = True
 
 def new_request(username, song, author):
     return Request(
@@ -34,7 +36,6 @@ def new_request(username, song, author):
 def add_to_queue(req:Request):
     if not req.username in queue['list'].keys():
         queue['list'][req.username] = []
-    print('buh')
     print(len(queue['list'][req.username]))
     queue['list'][req.username].append({
         "id":req.id,
@@ -42,10 +43,13 @@ def add_to_queue(req:Request):
         "artist":req.author,
         "timestamp":req.timestamp,
         "username":req.username,
-        "iter":len(queue['list'][req.username])
+        "iter":len(queue['list'][req.username]),
+        # "active":req.active
     })
     if not req.username in queue['order']:
         queue['order'].append(req.username)
+    if req.username in queue['inactive']:
+        queue['inactive'].remove(req.username)
     print(queue)
     update_queue()
 
@@ -70,7 +74,7 @@ def clear_queue():
     global queue
     print("Clearing the queue")
     f = open("data/queue.json", "w")
-    f.write("{\"order\":[],\"list\":{}}")
+    f.write(DEFAULT_QUEUE)
     f.close()
     f = open('data/queue.json', 'r')
     queue = json.loads(f.read())
@@ -131,13 +135,8 @@ def get_user(username):
 @authenticated_only
 def delete_song(data):
     global queue
-    # print(queue['list'][data['user']])
-    # print("\n")
-    # print(data['user'])
-    # data = json.loads(data)
     if session['admin'] or session['username'] == data['user']:
         song_id = data['id']
-        # print(queue['list'][data['user']])
         to_delete = -1
         for i in range(len(queue['list'][data['user']])):
             if to_delete is not -1:
@@ -145,8 +144,8 @@ def delete_song(data):
             elif queue['list'][data['user']][i]["id"] == song_id:
                 to_delete = i
         del queue['list'][data['user']][to_delete]
-        # print(queue['list'][data['user']])
-        # queue['list'][data['user']][song_id].pop()
+        if len(queue['list'][data['user']]) is 0:
+            queue['inactive'].append(data['user'])
         # TODO: add case for when num songs = 0
         print("Deleted song " + song_id)
         update_queue()

@@ -8,7 +8,7 @@
         <div class="box" id="queue_list"></div>
     </div>
     <div>
-        Viewing Queue for user <span id="user-id">N/A</span>
+        Viewing queue for user <span id="user-id">N/A</span>
         <div class="box" id="user_queue_list"></div>
     </div>
 </div>
@@ -83,14 +83,15 @@
         // userlist = document.getElementById('user_list')
         if (queue['order'].length >= 1){
             for (let i in queue['order']){
-                let username = queue['order'][i]
-                addQueueItem(username)
+                let username = queue['order'][i];
+                let isInactive = queue['inactive'].indexOf(username) != -1;
+                addQueueItem(username, isInactive)
         }
         }
     }
    
     socket.on("User Update Response", function(response){
-        console.warn(response)
+        // console.warn(response)
         clearUserQueue();
         document.getElementById('user-id').innerText = response['username'];
         if (response['songs'].length >= 1){
@@ -116,15 +117,16 @@
         socket.emit('Get User', username)
     }
 
-    function addQueueItem(username){
+    function addQueueItem(username, isInactive){
+        console.warn(isInactive)
         let queuelist = document.getElementById('queue_list');
         let label = document.createElement('div');
-        let trash = document.createElement('img');
-        trash.src = "{{ url_for('static', filename='assets/trashcan.png') }}";
-        trash.className = "trash-icon"
-        label.className = "queue-item"
+        let hide = document.createElement('div');
+        // hide.src = "{{ url_for('static', filename='assets/eye-open.png') }}";
+        hide.className = "eye-icon"
+        label.className = isInactive ? "queue-item inactive":"queue-item"
         label.innerText = username;
-        label.appendChild(trash)
+        label.appendChild(hide)
         label.addEventListener('click', function(e){
             currentUser = username;
             getUser(e.target.innerText)
