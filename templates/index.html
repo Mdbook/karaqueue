@@ -6,10 +6,18 @@
 	<h3>{{data}}</h3>
 	{% else %}
 
-	Logged in as {{session['username']}} | <a href="/logout">Logout</a> <br> <br>
-    <a class="button" href="/songreq">Request a Song</a>
+	Logged in as {{session['username']}} | <a href="/logout">Logout</a> <br> 
+	
+	{% if newsong %}
+	<span class="success">Song request received.</span><br>
+	{% else %}
+	<br>
+	{% endif %}
+	<br>
+    <a class="button" href="/request">Request a Song</a>
     {% if session['admin'] %}
     <a class="button" href="/users">User Admin</a> 
+	
     {% endif %}
 	
 	{% endif %}

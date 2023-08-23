@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+    
+
+<h2>Login</h2>
+<form action="/request" method="POST">
+  <input name="song" placeholder="Song name">
+  <input name="author" placeholder="Artist">
+  <input type="submit" value="Submit">
+</form>
+
+
+{% endblock %}

@@ -16,6 +16,9 @@ a {
 .error {
     color:rgb(222, 116, 116);
 }
+.success {
+    color:rgb(138, 203, 138);
+}
 .pageTitle {
     font-size:40px;
 }

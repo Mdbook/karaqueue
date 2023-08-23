@@ -13,7 +13,6 @@ def authenticated_only(f):
             pass
             disconnect()
         else:
-            print("gucci")
             return f(*args, **kwargs)
     return wrapped
 

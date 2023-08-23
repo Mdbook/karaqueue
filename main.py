@@ -1,30 +1,53 @@
 
 from flask import url_for, render_template, request, redirect, session
-
+import functools
 from users import User, db, test_admin
 from socket_worker import socketapp, app, create_user
+from worker import add_to_queue, new_request
 
+def admin_only(f):
+    @functools.wraps(f)
+    def wrapped(*args, **kwargs):
+        if session and session['logged_in'] and session['admin']:
+            return f(*args, **kwargs)
+        else:
+            return 'Unauthorized', 503
+    return wrapped
 
-
+def authenticated_only(f):
+    @functools.wraps(f)
+    def wrapped(*args, **kwargs):
+        if session and session['logged_in']:
+            return f(*args, **kwargs)
+        else:
+            return 'Unauthorized', 503
+    return wrapped
 
 @app.route('/')
 def home():
-    global test
-    test = ["a", "b", "c"]
     """ Session control"""
-    return render_template('index.html')
+    if "req" in request.args.keys() and request.args['req'] == "true":
+        return render_template('index.html', newsong=True)
+    return render_template('index.html', newsong=False)
 
-@app.route('/users', methods=['GET', 'POST'])
+@app.route('/users')
+@admin_only
 def users():
-    global test
-    if session['logged_in']:
-        if request.method == 'GET':
-            return render_template('users.html')
-        else:
-            pass
-            #handle user data here
+    return render_template('users.html')
+
+@app.route('/request', methods=['GET', 'POST'])
+@authenticated_only
+def requestsong():
+    if request.method == 'GET':
+        return render_template('request.html')
     else:
-        return 'Unauthorized', 503
+        username = session['username']
+        song = request.form['song']
+        author = request.form['author']
+        req = new_request(username, song, author)
+        add_to_queue(req)
+        session['request'] = True
+        return redirect(url_for('home') + "?req=true")
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -51,6 +74,7 @@ def login():
 @app.route('/register/', methods=['GET', 'POST'])
 def register():
     """Register Form"""
+    print(request)
     if request.method == 'POST':
         data = User.query.filter_by(username=request.form['username']).first()
         if data is not None:
