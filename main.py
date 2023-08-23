@@ -1,15 +1,9 @@
 
 from flask import url_for, render_template, request, redirect, session
-from flask_socketio import SocketIO
 
-# from instagram import get_followed_by, get_user_name
 from users import User, db, test_admin
 from socket_worker import socketapp, app, create_user
-    # default_admin = User(
-    #     username="admin",
-    #     password="admin")
 
-test = ["a", "b", "e"]
 
 
 
@@ -25,7 +19,7 @@ def users():
     global test
     if session['logged_in']:
         if request.method == 'GET':
-            return render_template('users.html', test=test)
+            return render_template('users.html')
         else:
             pass
             #handle user data here
@@ -86,3 +80,12 @@ if __name__ == '__main__':
 # @socketio.on('my event')
 # def handle_my_custom_event(json):
 #     print('received json: ' + str(json))
+
+# @socketapp.on('connect')
+# def connect_handler():
+#     print("asdf")
+#     if session['current_user'].is_authenticated:
+#         print("gotem")
+#     else:
+#         print("boo")
+#         return False

@@ -1,19 +1,37 @@
-from flask_socketio import SocketIO, send, emit
-import json
+from flask import session
+from flask_socketio import SocketIO, send, emit, disconnect
+import json, functools
+# from main import authenticated_only
 from app import app
 socketapp = SocketIO(app)
 from users import User, db
 
-@socketapp.on('message')
-def handle_message(data):
-    print('received message: ' + data)
+def authenticated_only(f):
+    @functools.wraps(f)
+    def wrapped(*args, **kwargs):
+        if not session['logged_in']:
+            pass
+            disconnect()
+        else:
+            print("gucci")
+            return f(*args, **kwargs)
+    return wrapped
 
 @socketapp.on('init')
+@authenticated_only
 def init(username):
     print('User "' + username + '" connected.')
     data = get_usernames()
     print(data)
     emit('User Init', data, json=True, broadcast=False)
+
+
+@socketapp.on('message')
+def handle_message(data):
+    print('received message: ' + data)
+
+
+
 
 @socketapp.on('delete')
 def delete(uname):
