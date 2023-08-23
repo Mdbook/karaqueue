@@ -28,6 +28,7 @@
         iterate(data)
         init_sortable()
     });
+
     socket.on('Queue Update', function(data){
         console.log(data);
         iterate(data);
@@ -69,11 +70,11 @@
     }
     
     function pushNewOrder(order){
-        socket.emit('change_order', JSON.stringify(order));
+        socket.emit('Change User Order', JSON.stringify(order));
     }
     function pushNewSongOrder(order){
         let newOrder = {'user':currentUser,'list':order}
-        socket.emit('change_user_order', JSON.stringify(newOrder));
+        socket.emit('Change Song Order', JSON.stringify(newOrder));
     }
 
     function iterate(queue){
@@ -88,8 +89,8 @@
         }
     }
    
-    socket.on("return_user_update", function(response){
-        console.log(response)
+    socket.on("User Update Response", function(response){
+        console.warn(response)
         clearUserQueue();
         document.getElementById('user-id').innerText = response['username'];
         if (response['songs'].length >= 1){
@@ -112,14 +113,18 @@
     function getUser(username){
         // currentUser = username;
         console.log(currentUser)
-        socket.emit('get_user', username)
+        socket.emit('Get User', username)
     }
 
     function addQueueItem(username){
         let queuelist = document.getElementById('queue_list');
         let label = document.createElement('div');
+        let trash = document.createElement('img');
+        trash.src = "{{ url_for('static', filename='assets/trashcan.png') }}";
+        trash.className = "trash-icon"
         label.className = "queue-item"
         label.innerText = username;
+        label.appendChild(trash)
         label.addEventListener('click', function(e){
             currentUser = username;
             getUser(e.target.innerText)
@@ -128,14 +133,26 @@
         console.log('done');
     }
 
+    function deleteSong(id){
+        socket.emit("Delete Song", {"id":id,"user":currentUser})
+    }
+
     function addToUserQueue(song, artist, id, iter){
         let queuelist = document.getElementById('user_queue_list');
         let itemsIn = queuelist.getElementsByTagName('div');
         let label = document.createElement('div');
+        let trash = document.createElement('img');
+        trash.src = "{{ url_for('static', filename='assets/trashcan.png') }}";
+        trash.className = "trash-icon"
         label.className = "queue-item"
         label.setAttribute('order', iter)
         label.innerText = song + " - " + artist;
         label.id = id;
+        label.appendChild(trash)
+        trash.addEventListener('click', function(e){
+            if (confirm("Delete Song \"" + e.target.parentElement.innerText + "\"?"))
+                deleteSong(e.target.parentElement.id);
+        });
         if (itemsIn.length == 0){
             queuelist.appendChild(label)
         } else {

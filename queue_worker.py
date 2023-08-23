@@ -2,6 +2,7 @@ import os, json, time
 from flask_socketio import send, emit, disconnect
 from id_gen import generate_id
 from socket_worker import socketapp, authenticated_only, admin_only
+from flask import session
 
 if not os.path.exists("data/queue.json"):
     f = open("data/queue.json", "w")
@@ -75,16 +76,19 @@ def clear_queue():
     queue = json.loads(f.read())
     socketapp.emit("Queue Update", queue)
 
-@socketapp.on('change_order')
+@socketapp.on('Change User')
 @admin_only
 def change_order(data):
     global queue
     print("Received order change")
     new_order = json.loads(data)
+    for user in queue['order']:
+        if user not in new_order:
+            new_order.append(user)
     queue['order'] = new_order
     update_queue()
 
-@socketapp.on('change_user_order')
+@socketapp.on('Change Song Order')
 @admin_only
 def change_order(data):
     global queue
@@ -92,6 +96,10 @@ def change_order(data):
     order = json.loads(data)
     user = order['user']
     ids = order['list']
+    oldids = queue['list'][user]
+    for oldid in oldids:
+        if oldid['id'] not in ids:
+            ids.append(oldid)
     i = 0
     newUserOrder = []
     for songid in ids:
@@ -106,14 +114,41 @@ def change_order(data):
     update_queue()
 
 
-@socketapp.on('get_user')
+@socketapp.on('Get User')
 @authenticated_only
-def change_order(username):
+def get_user(username):
     global queue
-    order = queue['list'][username]
-    ret = {
-        "username":username,
-        "songs":order
-    }
-    print(ret)
-    emit('return_user_update', ret, broadcast=False)
+    if session['admin'] or session['username'] == username:
+        order = queue['list'][username]
+        ret = {
+            "username":username,
+            "songs":order
+        }
+        print(ret)
+        emit('User Update Response', ret, broadcast=False)
+
+@socketapp.on('Delete Song')
+@authenticated_only
+def delete_song(data):
+    global queue
+    # print(queue['list'][data['user']])
+    # print("\n")
+    # print(data['user'])
+    # data = json.loads(data)
+    if session['admin'] or session['username'] == data['user']:
+        song_id = data['id']
+        # print(queue['list'][data['user']])
+        to_delete = -1
+        for i in range(len(queue['list'][data['user']])):
+            if to_delete is not -1:
+                queue['list'][data['user']][i]["iter"] = queue['list'][data['user']][i]["iter"] - 1
+            elif queue['list'][data['user']][i]["id"] == song_id:
+                to_delete = i
+        del queue['list'][data['user']][to_delete]
+        # print(queue['list'][data['user']])
+        # queue['list'][data['user']][song_id].pop()
+        # TODO: add case for when num songs = 0
+        print("Deleted song " + song_id)
+        update_queue()
+        # emit('User Update Response', ret, broadcast=False)
+
