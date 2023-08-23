@@ -3,7 +3,7 @@ from flask import url_for, render_template, request, redirect, session
 import functools
 from users import User, db, test_admin
 from socket_worker import socketapp, app, create_user
-from worker import add_to_queue, new_request
+from queue_worker import add_to_queue, new_request
 
 def admin_only(f):
     @functools.wraps(f)
@@ -34,6 +34,10 @@ def home():
 @admin_only
 def users():
     return render_template('users.html')
+@app.route('/queue')
+@admin_only
+def queue():
+    return render_template('queue.html')
 
 @app.route('/request', methods=['GET', 'POST'])
 @authenticated_only

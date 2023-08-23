@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block content %}
+{% if session['logged_in'] %}
+
+<button onclick="clear_queue()">Clear Queue</button>
+
+<div id="queue_list">
+   
+</div>
+<script type="text/javascript" charset="utf-8">
+    var socket = io();
+    function clear_queue(){
+        if (confirm("Are you sure you want to completely clear the queue?")){
+            socket.emit('clear_queue')
+        }
+    }
+    socket.on('connect', function(response) {
+        socket.emit('init_queue', "{{session['username']}}");
+    });
+    socket.on('Queue Init', function(data){
+        console.log(data);
+        iterate(data)
+    });
+    socket.on('Queue Update', function(data){
+        console.log(data)
+        iterate(data)
+        
+    });
+    function iterate(queue){
+        clearQueueList();
+        console.log(Object.keys(queue['list']).length)
+        // userlist = document.getElementById('user_list')
+        if (queue['order'].length >= 1){
+            for (let i in queue['order']){
+                username = queue['order'][i]
+                addQueueItem(username)
+        }
+        }
+    }
+    // socket.on('User Update', function(data){
+    //     users = JSON.parse(data);
+    //     clearUserList();
+    //     for (let i in users){
+    //         user = users[i];
+    //         // div = document.createElement('div');
+    //         // div.innerText = user;
+    //         // userlist.appendChild(div)
+    //         addUserItem(user)
+    //     }
+    // });
+
+    function clearQueueList(){
+        queuelist = document.getElementById('queue_list')
+        queuelist.innerHTML = "";
+    }
+
+    function delUser(username){
+        console.log('deleting ' + username)
+        socket.emit('delete', username)
+    }
+
+    function addQueueItem(username){
+        queuelist = document.getElementById('queue_list');
+        label = document.createElement('span');
+        divider = document.createElement('span');
+        label.innerText = username;
+        divider.innerText = " | ";
+        deletebutton = document.createElement('button');
+        deletebutton.innerText = "Delete";
+        deletebutton.setAttribute('username', username);
+        deletebutton.addEventListener('click', function(e){
+            if (confirm("Are you sure you want to delete the user " + username + "?")){
+                delUser(e.target.getAttribute('username'));
+            }
+        })
+        div = document.createElement('div');
+        div.appendChild(label);
+        div.appendChild(divider);
+        div.appendChild(deletebutton);
+        queuelist.appendChild(div);
+        console.log('done');
+    }
+</script>
+{% endif %}
+{% endblock %}

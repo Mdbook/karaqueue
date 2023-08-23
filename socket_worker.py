@@ -16,6 +16,16 @@ def authenticated_only(f):
             return f(*args, **kwargs)
     return wrapped
 
+def admin_only(f):
+    @functools.wraps(f)
+    def wrapped(*args, **kwargs):
+        if not session['logged_in'] and session['admin']:
+            pass
+            disconnect()
+        else:
+            return f(*args, **kwargs)
+    return wrapped
+
 @socketapp.on('init')
 @authenticated_only
 def init(username):
