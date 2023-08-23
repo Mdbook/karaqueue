@@ -1,1 +1,1 @@
-{"order": ["admin", "foo"], "list": {"admin": [{"id": "0TLSYLOEKS", "song": "buh", "artist": "asdf", "timestamp": 1692815848.673855, "username": "admin", "iter": 0}], "foo": []}, "inactive": ["foo"]}
+{"order": ["admin", "foo"], "list": {"admin": [{"id": "TB31FPGSKD", "song": "a", "artist": "s", "timestamp": 1692817359.2898057, "username": "admin", "iter": 0}], "foo": []}, "inactive": ["foo"], "hidden": []}

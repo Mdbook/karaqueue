@@ -3,7 +3,7 @@ from flask_socketio import send, emit, disconnect
 from id_gen import generate_id
 from socket_worker import socketapp, authenticated_only, admin_only
 from flask import session
-DEFAULT_QUEUE = "{\"order\":[],\"list\":{},\"inactive\":[]}"
+DEFAULT_QUEUE = "{\"order\":[],\"list\":{},\"inactive\":[],\"hidden\":[]}"
 
 if not os.path.exists("data/queue.json"):
     f = open("data/queue.json", "w")
@@ -151,3 +151,12 @@ def delete_song(data):
         update_queue()
         # emit('User Update Response', ret, broadcast=False)
 
+@socketapp.on('Show or Hide User')
+@admin_only
+def showhide_user(username):
+    global queue
+    if username in queue['hidden']:
+        queue['hidden'].remove(username)
+    else:
+        queue['hidden'].append(username)
+    update_queue()

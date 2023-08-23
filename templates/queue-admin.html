@@ -3,6 +3,7 @@
 {% if session['logged_in'] %}
 <link rel="stylesheet" href="{{ url_for('static', filename='queue.css') }}">
 <button onclick="clear_queue()">Clear Queue</button>
+<!-- TODO: add song from admin ui -->
 <div id="container">
     <div>User List<br>
         <div class="box" id="queue_list"></div>
@@ -41,6 +42,10 @@
             }
         }
     });
+
+    function showHideUser(username){
+        socket.emit('Show or Hide User', username);
+    }
 
     function init_sortable(){
         var queue_list = document.getElementById('queue_list');
@@ -85,7 +90,8 @@
             for (let i in queue['order']){
                 let username = queue['order'][i];
                 let isInactive = queue['inactive'].indexOf(username) != -1;
-                addQueueItem(username, isInactive)
+                let isHidden = queue['hidden'].indexOf(username) != -1;
+                addQueueItem(username, isInactive, isHidden)
         }
         }
     }
@@ -117,16 +123,24 @@
         socket.emit('Get User', username)
     }
 
-    function addQueueItem(username, isInactive){
+    function addQueueItem(username, isInactive, isHidden){
         console.warn(isInactive)
         let queuelist = document.getElementById('queue_list');
         let label = document.createElement('div');
         let hide = document.createElement('div');
         // hide.src = "{{ url_for('static', filename='assets/eye-open.png') }}";
         hide.className = "eye-icon"
-        label.className = isInactive ? "queue-item inactive":"queue-item"
+        label.className = "queue-item"
+        if (isInactive)
+            label.classList.add("inactive")
+        if (isHidden)
+            label.classList.add("hidden")
         label.innerText = username;
         label.appendChild(hide)
+        hide.addEventListener('click', function(e){
+            showHideUser(e.target.parentElement.innerText);
+            e.stopPropagation();
+        });
         label.addEventListener('click', function(e){
             currentUser = username;
             getUser(e.target.innerText)
@@ -154,6 +168,7 @@
         trash.addEventListener('click', function(e){
             if (confirm("Delete Song \"" + e.target.parentElement.innerText + "\"?"))
                 deleteSong(e.target.parentElement.id);
+                e.stopPropagation();
         });
         if (itemsIn.length == 0){
             queuelist.appendChild(label)
