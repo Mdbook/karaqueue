@@ -84,8 +84,30 @@ def change_order(data):
     queue['order'] = new_order
     update_queue()
 
-@socketapp.on('get_user')
+@socketapp.on('change_user_order')
 @admin_only
+def change_order(data):
+    global queue
+    print("Received user song order change")
+    order = json.loads(data)
+    user = order['user']
+    ids = order['list']
+    i = 0
+    newUserOrder = []
+    for songid in ids:
+        for song in queue['list'][user]:
+            if song['id'] == songid:
+                song['iter'] = i
+                newUserOrder.append(song)
+                i += 1
+    print("new order!")
+    print(newUserOrder)
+    queue['list'][user] = newUserOrder
+    update_queue()
+
+
+@socketapp.on('get_user')
+@authenticated_only
 def change_order(username):
     global queue
     order = queue['list'][username]

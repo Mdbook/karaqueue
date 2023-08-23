@@ -35,9 +35,12 @@ def home():
 def users():
     return render_template('users.html')
 @app.route('/queue')
-@admin_only
+@authenticated_only
 def queue():
-    return render_template('queue.html')
+    if session['admin']:
+        return render_template('queue-admin.html')
+    else:
+        return render_template('queue.html')
 
 @app.route('/request', methods=['GET', 'POST'])
 @authenticated_only
