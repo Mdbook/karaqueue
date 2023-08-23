@@ -1,0 +1,37 @@
+#container {
+    display:flex;
+    flex-flow:wrap;
+    justify-content:space-evenly;
+}
+.box {
+    display:flex;
+    flex-flow:column;
+    /* justify-content:center; */
+    width:30%;
+    border:1px solid white;
+    padding:1em;
+    height:70%;
+    min-width:150px;
+    min-height:100px;
+}
+#queue_list{
+    
+}
+.queue-item{
+    cursor:move;
+    background:rgb(24, 29, 29);
+    display:flex;
+    align-self:center;
+    padding:1em;
+    border:1px solid gray;
+    margin:2px;
+    width:90%;
+}
+.sortable-chosen{
+    background:rgb(37, 30, 30);
+}
+.sortable-ghost{
+    
+    color:black;
+    background:black;
+}

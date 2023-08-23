@@ -1,12 +1,17 @@
 {% extends "base.html" %}
 {% block content %}
 {% if session['logged_in'] %}
-
+<link rel="stylesheet" href="{{ url_for('static', filename='queue.css') }}">
 <button onclick="clear_queue()">Clear Queue</button>
-
-<ul id="queue_list">
-   
-</ul>
+<div id="container">
+    <div>User List<br>
+        <div class="box" id="queue_list"></div>
+    </div>
+    <div>
+        Viewing Queue for user <span id="user-id">N/A</span>
+        <div class="box" id="user_queue_list"></div>
+    </div>
+</div>
 <script type="text/javascript" charset="utf-8">
     var socket = io();
     function clear_queue(){
@@ -29,8 +34,34 @@
     });
 
     function init_sortable(){
-        var el = document.getElementById('queue_list');
-        var sortable = Sortable.create(el);
+        var queue_list = document.getElementById('queue_list');
+        var sortable = Sortable.create(queue_list, {onEnd: function (/**Event*/evt) {
+		var itemEls = evt.to.getElementsByTagName('div');
+        newOrder = []
+        console.log(itemEls)
+        for (i in itemEls){
+            if (itemEls[i].innerText){
+                newOrder.push(itemEls[i].innerText);
+            }
+        }
+        pushNewOrder(newOrder);
+	}});
+    // var user_queue_list = document.getElementById('user_queue_list');
+    //     var sortable = Sortable.create(user_queue_list, {onEnd: function (/**Event*/evt) {
+	// 	var itemEls = evt.to.getElementsByTagName('div');
+    //     newOrder = []
+    //     console.log(itemEls)
+    //     for (i in itemEls){
+    //         if (itemEls[i].innerText){
+    //             newOrder.push(itemEls[i].innerText);
+    //         }
+    //     }
+    //     pushNewOrder(newOrder);
+	// }});
+    }
+    
+    function pushNewOrder(order){
+        socket.emit('change_order', JSON.stringify(order));
     }
 
     function iterate(queue){
@@ -44,33 +75,49 @@
         }
         }
     }
-    // socket.on('User Update', function(data){
-    //     users = JSON.parse(data);
-    //     clearUserList();
-    //     for (let i in users){
-    //         user = users[i];
-    //         // div = document.createElement('div');
-    //         // div.innerText = user;
-    //         // userlist.appendChild(div)
-    //         addUserItem(user)
-    //     }
-    // });
-    
+   
+    socket.on("return_user_update", function(response){
+        console.log(response)
+        clearUserQueue();
+        document.getElementById('user-id').innerText = response['username'];
+        if (response['songs'].length >= 1){
+            for (let i in response['songs']){
+                // console.log(response[i])
+                addToUserQueue(response['songs'][i].song, response['songs'][i].artist)
+            }
+        }
+    });
 
     function clearQueueList(){
         queuelist = document.getElementById('queue_list')
         queuelist.innerHTML = "";
     }
+    function clearUserQueue(){
+        queuelist = document.getElementById('user_queue_list')
+        queuelist.innerHTML = "";
+    }
 
-    function delUser(username){
-        console.log('deleting ' + username)
-        socket.emit('delete', username)
+    function getUser(username){
+        socket.emit('get_user', username)
     }
 
     function addQueueItem(username){
         queuelist = document.getElementById('queue_list');
-        label = document.createElement('li');
+        label = document.createElement('div');
+        label.className = "queue-item"
         label.innerText = username;
+        label.addEventListener('click', function(e){
+            getUser(e.target.innerText)
+        });
+        queuelist.appendChild(label)
+        console.log('done');
+    }
+
+    function addToUserQueue(song, artist){
+        queuelist = document.getElementById('user_queue_list');
+        label = document.createElement('div');
+        label.className = "queue-item"
+        label.innerText = song + " - " + artist;
         queuelist.appendChild(label)
         console.log('done');
     }

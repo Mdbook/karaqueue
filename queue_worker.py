@@ -33,12 +33,15 @@ def new_request(username, song, author):
 def add_to_queue(req:Request):
     if not req.username in queue['list'].keys():
         queue['list'][req.username] = []
+    print('buh')
+    print(len(queue['list'][req.username]))
     queue['list'][req.username].append({
         "id":req.id,
         "song":req.song,
         "artist":req.author,
         "timestamp":req.timestamp,
-        "username":req.username
+        "username":req.username,
+        "iter":len(queue['list'][req.username])
     })
     if not req.username in queue['order']:
         queue['order'].append(req.username)
@@ -71,3 +74,24 @@ def clear_queue():
     f = open('data/queue.json', 'r')
     queue = json.loads(f.read())
     socketapp.emit("Queue Update", queue)
+
+@socketapp.on('change_order')
+@admin_only
+def change_order(data):
+    global queue
+    print("Received order change")
+    new_order = json.loads(data)
+    queue['order'] = new_order
+    update_queue()
+
+@socketapp.on('get_user')
+@admin_only
+def change_order(username):
+    global queue
+    order = queue['list'][username]
+    ret = {
+        "username":username,
+        "songs":order
+    }
+    print(ret)
+    emit('return_user_update', ret, broadcast=False)
