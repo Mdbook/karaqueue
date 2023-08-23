@@ -68,6 +68,19 @@ def init(username):
     print('User "' + username + '" connected is viewing queue.')
     emit('Queue Init', queue, json=True, broadcast=False)
 
+@socketapp.on('init_user_queue')
+@authenticated_only
+def init_user():
+    print('User "' + session['username'] + '" connected is viewing queue.')
+    username = session['username']
+    order = queue['list'][username]
+    ret = {
+        "username":username,
+        "songs":order
+    }
+    print(ret)
+    emit('User Update Response', ret, broadcast=False)
+
 @socketapp.on('clear_queue')
 @admin_only
 def clear_queue():
@@ -93,29 +106,33 @@ def change_order(data):
     update_queue()
 
 @socketapp.on('Change Song Order')
-@admin_only
+@authenticated_only
 def change_order(data):
     global queue
     print("Received user song order change")
     order = json.loads(data)
+    print(order)
     user = order['user']
-    ids = order['list']
-    oldids = queue['list'][user]
-    for oldid in oldids:
-        if oldid['id'] not in ids:
-            ids.append(oldid)
-    i = 0
-    newUserOrder = []
-    for songid in ids:
-        for song in queue['list'][user]:
-            if song['id'] == songid:
-                song['iter'] = i
-                newUserOrder.append(song)
-                i += 1
-    print("new order!")
-    print(newUserOrder)
-    queue['list'][user] = newUserOrder
-    update_queue()
+    if session['admin'] or session['username'] == user:
+        ids = order['list']
+        oldids = queue['list'][user]
+        for oldid in oldids:
+            if oldid['id'] not in ids:
+                ids.append(oldid)
+        i = 0
+        newUserOrder = []
+        for songid in ids:
+            for song in queue['list'][user]:
+                if song['id'] == songid:
+                    song['iter'] = i
+                    newUserOrder.append(song)
+                    i += 1
+        print("new order!")
+        print(newUserOrder)
+        queue['list'][user] = newUserOrder
+        update_queue()
+    else:
+        print("Auth error")
 
 
 @socketapp.on('Get User')

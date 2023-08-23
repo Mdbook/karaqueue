@@ -49,6 +49,8 @@ def requestsong():
         return render_template('request.html')
     else:
         username = session['username']
+        if not request.form['song'] or not request.form['author']:
+            return render_template('request.html')
         song = request.form['song']
         author = request.form['author']
         req = new_request(username, song, author)

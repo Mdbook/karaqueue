@@ -1,1 +1,1 @@
-{"order": ["admin", "foo"], "list": {"admin": [{"id": "TB31FPGSKD", "song": "a", "artist": "s", "timestamp": 1692817359.2898057, "username": "admin", "iter": 0}], "foo": []}, "inactive": ["foo"], "hidden": []}
+{"order": ["admin", "foo"], "list": {"admin": [{"id": "TB31FPGSKD", "song": "a", "artist": "s", "timestamp": 1692817359.2898057, "username": "admin", "iter": 0}], "foo": [{"id": "YVWYE7SUJV", "song": "song1", "artist": "artist1", "timestamp": 1692818528.738865, "username": "foo", "iter": 0}]}, "inactive": [], "hidden": []}

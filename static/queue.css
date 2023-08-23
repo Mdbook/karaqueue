@@ -72,3 +72,6 @@
 .inactive .eye-icon{
     content: url('/static/assets/eye-open.png');
 }
+.icon-always-visible{
+    opacity:0.7;
+}
