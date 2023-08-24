@@ -3,17 +3,6 @@
     flex-flow:wrap;
     justify-content:space-evenly;
 }
-.box {
-    display:flex;
-    flex-flow:column;
-    /* justify-content:center; */
-    width:30%;
-    border:1px solid white;
-    padding:1em;
-    height:70%;
-    min-width:200px;
-    min-height:100px;
-}
 .trash-icon {
     height:15px;
     display:flex;
@@ -74,4 +63,7 @@
 }
 .icon-always-visible{
     opacity:0.7;
+}
+button {
+    padding:10px;
 }

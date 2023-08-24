@@ -70,3 +70,10 @@ def create_user(uname, pwd):
     db.session.add(new_user)
     db.session.commit()
     update_users()
+
+def reset_password_for_user(uname, password):
+    print("Resetting password")
+    data = User.query.filter_by(username=uname).first()
+    data.password = password
+    db.session.commit()
+    print("Password reset")

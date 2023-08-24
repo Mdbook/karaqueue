@@ -14,7 +14,7 @@
     var socket = io();
     function clear_queue(){
         if (confirm("Are you sure you want to completely clear the queue?")){
-            socket.emit('clear_queue')
+            socket.emit('clear_queue');
         }
     }
     socket.on('connect', function(response) {
@@ -23,7 +23,7 @@
     });
     function init_sortable(){
     var user_queue_list = document.getElementById('user_queue_list');
-        var sortable = Sortable.create(user_queue_list, {onEnd: function (/**Event*/evt) {
+        var sortable = Sortable.create(user_queue_list, {onEnd: function (evt) {
 		var itemEls = evt.to.getElementsByTagName('div');
         var newOrder = []
         console.log(itemEls)

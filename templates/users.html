@@ -2,7 +2,7 @@
 {% block content %}
 {% if session['logged_in'] %}
 <link rel="stylesheet" href="{{ url_for('static', filename='users.css') }}">
-<div id="user_list">
+<div id="user_list" class="box">
    
 </div>
 <script type="text/javascript" charset="utf-8">
@@ -44,9 +44,10 @@
     function addUserItem(username){
         userlist = document.getElementById('user_list');
         label = document.createElement('span');
-        divider = document.createElement('span');
+        // divider = document.createElement('span');
         label.innerText = username;
-        divider.innerText = " | ";
+        label.className = "username"
+        // divider.innerText = " | ";
         deletebutton = document.createElement('button');
         deletebutton.innerText = "Delete";
         deletebutton.setAttribute('username', username);
@@ -55,10 +56,20 @@
                 delUser(e.target.getAttribute('username'));
             }
         })
+        editbtn = document.createElement('button');
+        editbtn.innerText = "Edit";
+        editbtn.setAttribute('username', username);
+        editbtn.addEventListener('click', function(e){
+            window.location.href = ("/reset-password?user=" + e.target.getAttribute('username'));
+        })
+        d1 = document.createElement('div');
         div = document.createElement('div');
+        div.className = "item"
         div.appendChild(label);
-        div.appendChild(divider);
-        div.appendChild(deletebutton);
+        // div.appendChild(divider);
+        d1.appendChild(deletebutton);
+        d1.appendChild(editbtn);
+        div.appendChild(d1);
         userlist.appendChild(div);
     }
 </script>

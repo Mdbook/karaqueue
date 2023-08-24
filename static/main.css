@@ -5,6 +5,29 @@ html,body {
 a {
     color:lightblue;
 }
+input {
+    margin:5px;
+}
+button {
+    align-self:flex-end;
+    margin-left:10px;
+    cursor:pointer;
+    background:rgb(32, 33, 34);
+    color:lightgray;
+    outline:none;
+    border:1px solid lightgray;
+}
+.box {
+    display:flex;
+    flex-flow:column;
+    /* justify-content:center; */
+    width:30%;
+    border:1px solid white;
+    padding:1em;
+    height:70%;
+    min-width:200px;
+    min-height:100px;
+}
 .button {
     text-decoration:none;
     padding:10px;

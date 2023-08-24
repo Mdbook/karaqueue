@@ -31,5 +31,3 @@ def test_admin():
         # print(data)
         # else:
         #     print(data.admin)
-
-

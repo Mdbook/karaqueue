@@ -2,7 +2,7 @@
 from flask import url_for, render_template, request, redirect, session
 import functools
 from users import User, db, test_admin
-from socket_worker import socketapp, app, create_user
+from socket_worker import socketapp, app, create_user, reset_password_for_user
 from queue_worker import add_to_queue, new_request
 
 def admin_only(f):
@@ -29,6 +29,38 @@ def home():
     if "req" in request.args.keys() and request.args['req'] == "true":
         return render_template('index.html', newsong=True)
     return render_template('index.html', newsong=False)
+
+@app.route('/reset-password', methods=['GET', 'POST'])
+@authenticated_only
+def reset_password():
+    if request.method == 'GET':
+        if "user" in request.args.keys():
+            if not session['admin']:
+                return 'Unauthorized', 503
+            return render_template("reset-admin.html",username=request.args['user'])
+        else:
+            return render_template("reset-password.html")
+    else:
+        if request.form and 'newPassword' in request.form.keys() and 'curPassword' in request.form.keys() and 'confirmPassword' in request.form.keys():
+            if request.form['confirmPassword'] == request.form['newPassword']:
+                data = User.query.filter_by(username=session['username'], password=request.form['curPassword']).first()
+                if data is not None:
+                    reset_password_for_user(session['username'], request.form['newPassword'])
+                    return redirect(url_for('home'))
+                else:
+                    return render_template('reset-password.html', passwordIncorrect=True)
+            else:
+                return render_template('reset-password.html', passwordNotMatch=True)
+        elif 'username' in request.form.keys() and 'newPassword' in request.form.keys():
+                if session['admin']:
+                    reset_password_for_user(request.form['username'], request.form['newPassword'])
+                    return redirect(url_for('home'))
+                else:
+                    return 'Unauthorized', 503
+        else:
+            print(request.form.keys())
+            return render_template('reset-password.html')
+    return render_template('reset-password.html')
 
 @app.route('/users')
 @admin_only
@@ -75,9 +107,9 @@ def login():
                 session['username'] = data.username
                 return redirect(url_for('home'))
             else:
-                return 'Dont Login'
+                return render_template('login.html', incorrect=True)
         except:
-            return "Dont Login"
+            return "Error"
 
 
 @app.route('/register/', methods=['GET', 'POST'])
