@@ -67,3 +67,9 @@
 button {
     padding:10px;
 }
+.active {
+    background:rgb(66, 106, 66);
+}
+.active .eye-icon{
+    display:none;
+}

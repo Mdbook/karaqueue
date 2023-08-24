@@ -90,8 +90,10 @@
                 let username = queue['order'][i];
                 let isInactive = queue['inactive'].indexOf(username) != -1;
                 let isHidden = queue['hidden'].indexOf(username) != -1;
-                addQueueItem(username, isInactive, isHidden)
-        }
+                let isActive = queue['active'] == username;
+                addQueueItem(username, isInactive, isHidden, isActive)
+            }
+            // document.getElementById('queue_list').getElementsByTagName('div')[queue['active']].classList.add('active')
         }
     }
    
@@ -122,7 +124,7 @@
         socket.emit('Get User', username)
     }
 
-    function addQueueItem(username, isInactive, isHidden){
+    function addQueueItem(username, isInactive, isHidden, isActive){
         let queuelist = document.getElementById('queue_list');
         let label = document.createElement('div');
         let hide = document.createElement('div');
@@ -133,6 +135,8 @@
             label.classList.add("inactive")
         if (isHidden)
             label.classList.add("hidden")
+        if (isActive)
+            label.classList.add('active')
         label.innerText = username;
         label.appendChild(hide)
         hide.addEventListener('click', function(e){

@@ -3,7 +3,7 @@ from flask_socketio import send, emit, disconnect
 from id_gen import generate_id
 from socket_worker import socketapp, authenticated_only, admin_only
 from flask import session
-DEFAULT_QUEUE = "{\"order\":[],\"list\":{},\"inactive\":[],\"hidden\":[]}"
+DEFAULT_QUEUE = "{\"order\":[],\"list\":{},\"inactive\":[],\"hidden\":[],\"active\":\"None\"}"
 
 if not os.path.exists("data/queue.json"):
     f = open("data/queue.json", "w")
@@ -36,7 +36,7 @@ def new_request(username, song, author):
 def add_to_queue(req:Request):
     if not req.username in queue['list'].keys():
         queue['list'][req.username] = []
-    print(len(queue['list'][req.username]))
+    # print(len(queue['list'][req.username]))
     queue['list'][req.username].append({
         "id":req.id,
         "song":req.song,
@@ -47,11 +47,23 @@ def add_to_queue(req:Request):
         # "active":req.active
     })
     if not req.username in queue['order']:
+        if len(getActiveUsers()) == 0:
+            queue['active'] = req.username
         queue['order'].append(req.username)
     if req.username in queue['inactive']:
         queue['inactive'].remove(req.username)
     print(queue)
     update_queue()
+
+def getActiveUsers():
+    allUsers = queue['order']
+    hiddenUsers = queue['hidden']
+    inactiveUsers = queue['inactive']
+    activeUsers = []
+    for user in allUsers:
+        if not (user in hiddenUsers or user in inactiveUsers):
+            activeUsers.append(user)
+    return activeUsers
 
 
 def update_queue():
