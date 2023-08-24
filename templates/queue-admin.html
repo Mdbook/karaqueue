@@ -3,6 +3,8 @@
 {% if session['logged_in'] %}
 <link rel="stylesheet" href="{{ url_for('static', filename='queue.css') }}">
 <button onclick="clear_queue()">Clear Queue</button>
+<button onclick="prev_singer()">Prev Singer</button>
+<button onclick="next_singer()">Next Singer</button><br><br>
 <!-- TODO: add song from admin ui -->
 <div id="container">
     <div>User List<br>
@@ -41,6 +43,14 @@
             }
         }
     });
+
+    function next_singer(){
+        socket.emit('Singer Update', "next");
+    }
+
+    function prev_singer(){
+        socket.emit('Singer Update', "prev");
+    }
 
     function showHideUser(username){
         socket.emit('Show or Hide User', username);

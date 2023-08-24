@@ -189,3 +189,32 @@ def showhide_user(username):
     else:
         queue['hidden'].append(username)
     update_queue()
+
+@socketapp.on("Singer Update")
+@admin_only
+def singer_update(code):
+    if queue['active'] == "None" or len(getActiveUsers()) < 2:
+        return
+    if code == "next":
+        next_singer()
+    elif code == "prev":
+        prev_singer()
+
+
+def next_singer():
+    validSingers = getActiveUsers()
+    currentIndex = validSingers.index(queue['active'])
+    currentIndex = currentIndex + 1
+    if currentIndex == len(validSingers):
+        currentIndex = 0
+    queue['active'] = validSingers[currentIndex]
+    update_queue()
+
+def prev_singer():
+    validSingers = getActiveUsers()
+    currentIndex = validSingers.index(queue['active'])
+    currentIndex = currentIndex - 1
+    if currentIndex == -1:
+        currentIndex = len(validSingers) - 1
+    queue['active'] = validSingers[currentIndex]
+    update_queue()
