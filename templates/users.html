@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 {% if session['logged_in'] %}
-
+<link rel="stylesheet" href="{{ url_for('static', filename='users.css') }}">
 <div id="user_list">
    
 </div>
