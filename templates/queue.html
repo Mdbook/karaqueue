@@ -46,7 +46,6 @@
     }
    
     socket.on("User Update Response", function(response){
-        console.warn(response)
         clearUserQueue();
         if (response['songs'].length >= 1){
             for (let i in response['songs']){

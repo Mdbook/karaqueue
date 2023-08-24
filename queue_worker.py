@@ -93,7 +93,7 @@ def clear_queue():
     queue = json.loads(f.read())
     socketapp.emit("Queue Update", queue)
 
-@socketapp.on('Change User')
+@socketapp.on('Change User Order')
 @admin_only
 def change_order(data):
     global queue

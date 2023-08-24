@@ -25,7 +25,6 @@
         socket.emit('init_queue', "{{session['username']}}");
     });
     socket.on('Queue Init', function(data){
-        console.log(data);
         iterate(data)
         init_sortable()
     });
@@ -124,7 +123,6 @@
     }
 
     function addQueueItem(username, isInactive, isHidden){
-        console.warn(isInactive)
         let queuelist = document.getElementById('queue_list');
         let label = document.createElement('div');
         let hide = document.createElement('div');
