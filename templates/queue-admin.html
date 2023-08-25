@@ -1,14 +1,27 @@
 {% extends "base.html" %}
 {% block content %}
 {% if session['logged_in'] %}
-<link rel="stylesheet" href="{{ url_for('static', filename='queue.css') }}">
-<div class="button-container"><div class="button" onclick="clear_queue()">Clear Queue</div>
-<div class="button" onclick="prev_singer()">Prev Singer</div>
-<div class="button" onclick="next_singer()">Next Singer</div><br><br></div>
+{% if request.MOBILE %}
+<link rel="stylesheet" href="{{ url_for('static', filename='queue-mobile.css') }}">
+<div class="button-row">
+    <div class="button small-button" onclick="clear_queue()">Clear Queue</div>
+    <div class="button small-button" onclick="prev_singer()">Prev Singer</div>
+    <div class="button small-button" onclick="next_singer()">Next Singer</div><br><br></div><br><br>
+{% else %}
+<link rel="stylesheet" href="{{ url_for('static', filename='queue.css') }}"> 
+<div class="button-container">
+    <div class="button" onclick="clear_queue()">Clear Queue</div>
+    <div class="button" onclick="prev_singer()">Prev Singer</div>
+    <div class="button" onclick="next_singer()">Next Singer</div><br><br></div>
+{% endif %}
 <!-- TODO: add song from admin ui -->
 <div id="container">
     <div>
+        {% if request.MOBILE %}
+        <div class="box wide-box">
+        {% else %}
         <div class="box">
+        {% endif %}
             <span class="section-header">
                 User List
             </span>
@@ -19,7 +32,11 @@
         </div>
     </div>
     <div>
+        {% if request.MOBILE %}
+        <div class="box wide-box">
+        {% else %}
         <div class="box">
+        {% endif %}
             <span class="section-header">Viewing queue for user
                 <span class="invisible-sector">:</span>
                 <span id="user-id">N/A</span>

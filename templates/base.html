@@ -1,8 +1,15 @@
 <html>
   <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400&display=swap" rel="stylesheet">
     <script src="{{ url_for('static', filename='sortable.min.js') }}" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
+    {% if request.MOBILE %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='mobile.css') }}">
+    {% else %}
     <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+    {% endif %}
     <title>KaraQueue</title>
     
   </head>
@@ -11,8 +18,8 @@
       <a class="title" href="/">KaraQueue</a>
       <span>
         {% if session['logged_in'] %}
-        <span>
-          Current place in line: <span id="line-placeholder"></span>
+        <span class="place-in-line">
+          <span>Current place in line: <span id="line-placeholder"></span></span>
         </span>
         {% endif %}
       </span>

@@ -8,7 +8,10 @@
 	<h3>{{data}}</h3>
 	{% else %}
 		<span class="section-header">
-			Logged in as {{session['username']}}. 
+			<span>
+
+				Logged in as {{session['username']}}. 
+			</span>
 			<a href="/logout">Logout</a> | <a href="/reset-password">Reset Password</a> <br> 
 		</span>
 		<hr class="white-divider">
@@ -18,7 +21,7 @@
 		<br>
 		{% endif %}
 		<br>
-		<div class="button-row">
+		<div class="button-container">
 			<a class="button light-button" href="/request">Request a Song</a>
 			{% if session['admin'] %}
 			<a class="button light-button" href="/users">User Admin</a> 
@@ -42,7 +45,7 @@
 Welcome to KaraQueue!
 		</span>
 		<hr class="white-divider"><br><br>
-		<div style="display:flex;justify-content:space-around;flex-flow:row;">
+		<div class="button-container">
 			<span></span>
 			<a class="button light-button" href="/login">Returning User</a> 
 			<a class="button light-button" href="/register">New User</a>

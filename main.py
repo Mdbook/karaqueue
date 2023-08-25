@@ -1,6 +1,7 @@
 
 from flask import url_for, render_template, request, redirect, session
 import functools
+from flask_mobility import Mobility
 from users import User, db, test_admin
 from socket_worker import socketapp, app, create_user, reset_password_for_user
 from queue_worker import add_to_queue, new_request

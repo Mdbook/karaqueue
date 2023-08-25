@@ -2,10 +2,14 @@
 {% block content %}
 <div class="center-padder">
 {% if session['logged_in'] %}
-<link rel="stylesheet" href="{{ url_for('static', filename='queue.css') }}">
-<!-- TODO: add song from admin ui -->
-<!-- <div id="container"> -->
-    <div class="box">
+
+{% if request.MOBILE %}
+    <div class="box wide-box">
+        <link rel="stylesheet" href="{{ url_for('static', filename='queue-mobile.css') }}">
+{% else %}
+        <link rel="stylesheet" href="{{ url_for('static', filename='queue.css') }}">
+        <div class="box wide-box">
+{% endif %}
         <span class="section-header">
 
         Logged in as {{session['username']}}. <a href="/logout">Logout</a> | <a href="/request">Request</a> </span>

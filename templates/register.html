@@ -1,17 +1,17 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="center-padder">
 {% if session['logged_in'] %}
 <p>Oh no Dont show page</p>
 {% else %}
-
 <div class="pageTitle">Register</div>
+<div class="center-padder">
+
 {% if userExists %}
 <span class="error">User already exists. Please pick another username.</span><br><br>
 {% else %}
 <br><br>
 {% endif %}
-<div class="box" style="width:70%;">
+<div class="box wide-box">
   <span class="section-header">Register</span>
   <hr class="white-divider"/>
 <form style="display:flex;justify-content:flex-start;flex-flow:column;" action="/register/" method="POST">

@@ -1,12 +1,18 @@
 {% extends "base.html" %}
 {% block content %}
 {% if session['logged_in'] %}
+<div class="center-padder">
+{% if request.MOBILE %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='users-mobile.css') }}">
+{% else %}
 <link rel="stylesheet" href="{{ url_for('static', filename='users.css') }}">
-<div class="box">
+{% endif %}
+<div class="box wide-box">
     <span class="section-header">User Admin</span>
-        <hr class="white-divider"/>
+    <hr class="white-divider"/>
     <div id="user_list"></div>
-   
+    
 </div>
 <script type="text/javascript" charset="utf-8">
     var socket = io();
@@ -33,17 +39,17 @@
             addUserItem(user)
         }
     });
-
+    
     function clearUserList(){
         userlist = document.getElementById('user_list')
         userlist.innerHTML = "";
     }
-
+    
     function delUser(username){
         console.log('deleting ' + username)
         socket.emit('delete', username)
     }
-
+    
     function addUserItem(username){
         userlist = document.getElementById('user_list');
         label = document.createElement('span');
@@ -78,5 +84,6 @@
         userlist.appendChild(div);
     }
 </script>
+</div>
 {% endif %}
 {% endblock %}
