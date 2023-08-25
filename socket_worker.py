@@ -39,16 +39,11 @@ def init(username):
 def handle_message(data):
     print('received message: ' + data)
 
-
-
-
-@socketapp.on('delete')
-def delete(uname):
+def delete_user(uname):
     User.query.filter_by(username=uname).delete()
     print("Deleted user " + uname)
     db.session.commit()
     update_users()
-
 
 def get_users():
     return User.query.all()

@@ -1,7 +1,7 @@
 import os, json, time
 from flask_socketio import send, emit, disconnect
 from id_gen import generate_id
-from socket_worker import socketapp, authenticated_only, admin_only
+from socket_worker import socketapp, authenticated_only, admin_only, delete_user
 from flask import session
 DEFAULT_QUEUE = "{\"order\":[],\"list\":{},\"inactive\":[],\"hidden\":[],\"active\":\"None\"}"
 
@@ -237,3 +237,35 @@ def get_order_data():
         "order":order
     }
     return data
+
+@socketapp.on('delete')
+def delete(uname):
+    socketapp.emit("Force Logout", uname)
+    delete_user(uname)
+    flag = False
+    bigflag = False
+    if uname == queue['active']:
+        bigflag = True
+        next_singer()
+        if uname == queue['active']:
+            queue['active'] = "None"
+            flag = True
+    if uname in queue['order']:
+        flag = True
+        queue['order'].remove(uname)
+        print('removed from order')
+    if uname in queue['list'].keys():
+        flag = True
+        queue['list'].pop(uname)
+        print('removed from list')
+    if uname in queue['inactive']:
+        flag = True
+        queue['inactive'].remove(uname)
+        print('removed from inactive')
+    if uname in queue['hidden']:
+        flag = True
+        queue['hidden'].remove(flag)
+        print('removed from hidden')
+    print(flag)
+    if flag:
+        update_queue()

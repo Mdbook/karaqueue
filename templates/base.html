@@ -42,6 +42,11 @@
   skt.on('connect', function (response) {
     skt.emit('Request Order Status', username);
   });
+  skt.on('Force Logout', function(uname) {
+    if (username == uname){
+      window.location.href="/logout";
+    }
+  });
   skt.on('Order Status', function (data) {
     order = data['order'];
     currentlyUp = data['singer'];
