@@ -2,7 +2,10 @@
 {% block content %}
 {% if session['logged_in'] %}
 <link rel="stylesheet" href="{{ url_for('static', filename='users.css') }}">
-<div id="user_list" class="box">
+<div class="box">
+    <span class="section-header">User Admin</span>
+        <hr class="white-divider"/>
+    <div id="user_list"></div>
    
 </div>
 <script type="text/javascript" charset="utf-8">
@@ -48,7 +51,8 @@
         label.innerText = username;
         label.className = "username"
         // divider.innerText = " | ";
-        deletebutton = document.createElement('button');
+        deletebutton = document.createElement('span');
+        deletebutton.className = "small-button";
         deletebutton.innerText = "Delete";
         deletebutton.setAttribute('username', username);
         deletebutton.addEventListener('click', function(e){
@@ -56,7 +60,8 @@
                 delUser(e.target.getAttribute('username'));
             }
         })
-        editbtn = document.createElement('button');
+        editbtn = document.createElement('span');
+        editbtn.className = "small-button";
         editbtn.innerText = "Edit";
         editbtn.setAttribute('username', username);
         editbtn.addEventListener('click', function(e){

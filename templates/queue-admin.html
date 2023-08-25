@@ -2,17 +2,31 @@
 {% block content %}
 {% if session['logged_in'] %}
 <link rel="stylesheet" href="{{ url_for('static', filename='queue.css') }}">
-<button onclick="clear_queue()">Clear Queue</button>
-<button onclick="prev_singer()">Prev Singer</button>
-<button onclick="next_singer()">Next Singer</button><br><br>
+<div class="button-container"><div class="button" onclick="clear_queue()">Clear Queue</div>
+<div class="button" onclick="prev_singer()">Prev Singer</div>
+<div class="button" onclick="next_singer()">Next Singer</div><br><br></div>
 <!-- TODO: add song from admin ui -->
 <div id="container">
-    <div>User List<br>
-        <div class="box" id="queue_list"></div>
+    <div>
+        <div class="box">
+            <span class="section-header">
+                User List
+            </span>
+            <!-- <br> -->
+            <hr class="white-divider"/>
+            <br>
+            <div id="queue_list"></div>
+        </div>
     </div>
     <div>
-        Viewing queue for user <span id="user-id">N/A</span>
-        <div class="box" id="user_queue_list"></div>
+        <div class="box">
+            <span class="section-header">Viewing queue for user
+                <span class="invisible-sector">:</span>
+                <span id="user-id">N/A</span>
+            </span>
+            <hr class="white-divider"/><br>
+            <div id="user_queue_list"></div>
+        </div>
     </div>
 </div>
 <script type="text/javascript" charset="utf-8">

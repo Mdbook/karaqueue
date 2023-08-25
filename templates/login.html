@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
+<div class="center-padder">
 {% if session['logged_in'] %}
 <span>You're logged in already!</span><br>
 {% elif incorrectLogin %}
@@ -7,11 +8,14 @@
 {% else %}
 <br>
 {% endif %}
-<h2>Login</h2>
-<form action="/login" method="POST">
-  <input type="username" name="username" placeholder="Stage Name">
-  <input type="password" name="password" placeholder="Password">
-  <input type="submit" value="Log in">
-</form>
-
+<div class="box" style="width:70%;">
+  <span class="section-header">Login</span>
+  <hr class="white-divider"/>
+  <form style="display:flex;justify-content:flex-start;flex-flow:column;" action="/login" method="POST">
+    <input class="input" type="username" name="username" placeholder="Stage Name">
+    <input class="input" type="password" name="password" placeholder="Password">
+    <input class="button light-button" type="submit" value="Log in">
+  </form>
+</div>
+</div>
 {% endblock %}

@@ -1,39 +1,55 @@
 {% extends "base.html" %}
 {% block content %}
+<div class="center-padder">
 {% if session['logged_in'] %}
+<div class="box wide-box">
    
 	{% if data %}
 	<h3>{{data}}</h3>
 	{% else %}
-
-	Logged in as {{session['username']}}. <a href="/logout">Logout</a> | <a href="/reset-password">Reset Password</a> <br> 
-	
-	{% if newsong %}
-	<span class="success">Song request received.</span><br>
-	{% else %}
-	<br>
-	{% endif %}
-	<br>
-    <a class="button" href="/request">Request a Song</a>
-    {% if session['admin'] %}
-    <a class="button" href="/users">User Admin</a> 
-    {% endif %}
-	<a class="button" href="/queue">
-		{% if not session['admin'] %}
-			View
+		<span class="section-header">
+			Logged in as {{session['username']}}. 
+			<a href="/logout">Logout</a> | <a href="/reset-password">Reset Password</a> <br> 
+		</span>
+		<hr class="white-divider">
+		{% if newsong %}
+		<span class="success">Song request received.</span><br>
 		{% else %}
-			Edit
+		<br>
 		{% endif %}
-		
-		 Queue</a> 
-	
-	{% endif %}
-
+		<br>
+		<div class="button-row">
+			<a class="button light-button" href="/request">Request a Song</a>
+			{% if session['admin'] %}
+			<a class="button light-button" href="/users">User Admin</a> 
+			{% endif %}
+			<a class="button light-button" href="/queue">
+				{% if not session['admin'] %}
+				View
+				{% else %}
+				Edit
+				{% endif %}
+				
+				Queue</a> 
+				
+				{% endif %}
+		</div>
+			
+		</div>
 {% else %}
-<p>Welcome to KaraQueue!</p>
-
-<a class="button" href="/login">Returning User</a> 
-<a class="button" href="/register">New User</a>
+<div class="box wide-box">
+		<span class="section-header">
+Welcome to KaraQueue!
+		</span>
+		<hr class="white-divider"><br><br>
+		<div style="display:flex;justify-content:space-around;flex-flow:row;">
+			<span></span>
+			<a class="button light-button" href="/login">Returning User</a> 
+			<a class="button light-button" href="/register">New User</a>
+			<span></span>
+			
+		</div>
 
 {% endif %}
+	</div>
 {% endblock %}
