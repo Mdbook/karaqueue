@@ -9,7 +9,8 @@
 .trash-icon {
     height: 40px;
     display: flex;
-    align-self: flex-end;
+    align-self: center;
+    justify-self:flex-end;
     right: 5px;
     /* opacity:0; */
     transition: 0.1s;
@@ -65,8 +66,10 @@
     height: 40px;
     width: 40px;
     display: flex;
+    opacity:1;
     /* opacity:0.2; */
-    align-self: flex-end;
+    justify-self: flex-end;
+    align-self:center;
     right: 5px;
     /* opacity:0; */
     transition: 0.1s;

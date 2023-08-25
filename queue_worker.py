@@ -91,7 +91,7 @@ def init_user():
         "username":username,
         "songs":order
     }
-    print(ret)
+    # print(ret)
     emit('User Update Response', ret, broadcast=False)
 
 @socketapp.on('clear_queue')
@@ -124,7 +124,7 @@ def change_order(data):
     global queue
     print("Received user song order change")
     order = json.loads(data)
-    print(order)
+    # print(order)
     user = order['user']
     if session['admin'] or session['username'] == user:
         ids = order['list']
@@ -140,8 +140,8 @@ def change_order(data):
                     song['iter'] = i
                     newUserOrder.append(song)
                     i += 1
-        print("new order!")
-        print(newUserOrder)
+        # print("new order!")
+        # print(newUserOrder)
         queue['list'][user] = newUserOrder
         update_queue()
     else:
@@ -158,7 +158,7 @@ def get_user(username):
             "username":username,
             "songs":order
         }
-        print(ret)
+        # print(ret)
         emit('User Update Response', ret, broadcast=False)
 
 @socketapp.on('Delete Song')
@@ -175,6 +175,10 @@ def delete_song(data):
                 to_delete = i
         del queue['list'][data['user']][to_delete]
         if len(queue['list'][data['user']]) is 0:
+            if queue['active'] == data['user']:
+                next_singer()
+                if queue['active'] == data['user']:
+                    queue['active'] = None
             queue['inactive'].append(data['user'])
         # TODO: add case for when num songs = 0
         print("Deleted song " + song_id)
@@ -210,6 +214,12 @@ def requested_order_status(username):
 
 def next_singer():
     validSingers = getActiveUsers()
+    # print(getActiveUsers())
+    if len(validSingers) == 0:
+        # print('gotcha')
+        queue['active'] = "None"
+        update_queue()
+        return
     currentIndex = validSingers.index(queue['active'])
     currentIndex = currentIndex + 1
     if currentIndex == len(validSingers):
@@ -243,9 +253,9 @@ def delete(uname):
     socketapp.emit("Force Logout", uname)
     delete_user(uname)
     flag = False
-    bigflag = False
+    # bigflag = False
     if uname == queue['active']:
-        bigflag = True
+        # bigflag = True
         next_singer()
         if uname == queue['active']:
             queue['active'] = "None"
@@ -253,19 +263,19 @@ def delete(uname):
     if uname in queue['order']:
         flag = True
         queue['order'].remove(uname)
-        print('removed from order')
+        # print('removed from order')
     if uname in queue['list'].keys():
         flag = True
         queue['list'].pop(uname)
-        print('removed from list')
+        # print('removed from list')
     if uname in queue['inactive']:
         flag = True
         queue['inactive'].remove(uname)
-        print('removed from inactive')
+        # print('removed from inactive')
     if uname in queue['hidden']:
         flag = True
         queue['hidden'].remove(flag)
-        print('removed from hidden')
-    print(flag)
+        # print('removed from hidden')
+    # print(flag)
     if flag:
         update_queue()
