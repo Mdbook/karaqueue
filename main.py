@@ -12,7 +12,7 @@ def admin_only(f):
         if session and session['logged_in'] and session['admin']:
             return f(*args, **kwargs)
         else:
-            return 'Unauthorized', 503
+            return redirect(url_for('home') + "?req=true")
     return wrapped
 
 def authenticated_only(f):
@@ -21,7 +21,7 @@ def authenticated_only(f):
         if session and session['logged_in']:
             return f(*args, **kwargs)
         else:
-            return 'Unauthorized', 503
+            return redirect(url_for('home') + "?req=true")
     return wrapped
 
 @app.route('/')
@@ -39,7 +39,7 @@ def reset_password():
     if request.method == 'GET':
         if "user" in request.args.keys():
             if not session['admin']:
-                return 'Unauthorized', 503
+                return redirect(url_for('home') + "?req=true")
             return render_template("reset-admin.html",username=request.args['user'])
         else:
             return render_template("reset-password.html")
@@ -59,7 +59,7 @@ def reset_password():
                     reset_password_for_user(request.form['username'], request.form['newPassword'])
                     return redirect(url_for('home') + "?passreset=true")
                 else:
-                    return 'Unauthorized', 503
+                    return redirect(url_for('home') + "?req=true")
         else:
             # print(request.form.keys())
             return render_template('reset-password.html')
