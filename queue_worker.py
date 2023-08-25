@@ -67,6 +67,7 @@ def getActiveUsers():
 
 
 def update_queue():
+    update_order()
     queue_string = json.dumps(queue)
     f = open("data/queue.json", "w")
     f.write(queue_string)
@@ -200,6 +201,12 @@ def singer_update(code):
     elif code == "prev":
         prev_singer()
 
+@socketapp.on("Request Order Status")
+@authenticated_only
+def requested_order_status(username):
+    if session['admin'] or session['username'] == username:
+        emit('Order Status', get_order_data(), broadcast=False)
+
 
 def next_singer():
     validSingers = getActiveUsers()
@@ -218,3 +225,15 @@ def prev_singer():
         currentIndex = len(validSingers) - 1
     queue['active'] = validSingers[currentIndex]
     update_queue()
+
+def update_order():
+    socketapp.emit("Order Status", get_order_data())
+
+def get_order_data():
+    order = getActiveUsers()
+    singer = queue['active']
+    data = {
+        "singer":singer,
+        "order":order
+    }
+    return data

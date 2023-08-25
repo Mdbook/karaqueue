@@ -3,14 +3,79 @@
     <script src="{{ url_for('static', filename='sortable.min.js') }}" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
-		<title>KaraQueue</title>
+    <title>KaraQueue</title>
+    
   </head>
   <body>
-    <div><a class="title" href="/">KaraQueue</a></div>
+    <div class="head-center">
+      <a class="title" href="/">KaraQueue</a>
+      <span>
+        {% if session['logged_in'] %}
+        <span>
+          Current place in line: <span id="line-placeholder"></span>
+        </span>
+        {% endif %}
+      </span>
+      <div style="width:10%"></div>
+    </div>
 		
     <hr>
     
 
       {% block content %}{% endblock %}
   </body>
+  {% if session['logged_in'] %}
+  <script>
+    var skt = io();
+    var username = "{{ session['username'] }}"
+    skt.on('connect', function(response) {
+        skt.emit('Request Order Status', username);
+    });
+    skt.on('Order Status', function(data){
+      order = data['order'];
+      currentlyUp = data['singer'];
+      element = document.getElementById('line-placeholder');
+      if (currentlyUp == username) {
+        element.innerText = "You're up!"
+      } else if (order.indexOf(username) != -1) {
+        i = order.indexOf(currentlyUp);
+        e = 0;
+        loop = true;
+        while (loop) {
+          i = i + 1;
+          e = e + 1;
+          if (i == order.length) {
+            i = 0;
+          }
+          if (order.indexOf(username) == i){
+            loop = false;
+          }
+        }
+        if (e == 1){
+          element.innerText = "Next";
+        } else {
+          element.innerText = ordinal_suffix_of(e);
+        }
+      } else {
+        element.innerText = "N/A";
+      }
+    });
+    
+  function ordinal_suffix_of(i) {
+    var j = i % 10,
+        k = i % 100;
+    if (j == 1 && k != 11) {
+        return i + "st";
+    }
+    if (j == 2 && k != 12) {
+        return i + "nd";
+    }
+    if (j == 3 && k != 13) {
+        return i + "rd";
+    }
+    return i + "th";
+}
+  </script>
+  {% endif %}
+  
 </html>
