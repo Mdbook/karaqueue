@@ -6,227 +6,243 @@
 <div class="button-row">
     <div class="button small-button" onclick="clear_queue()">Clear Queue</div>
     <div class="button small-button" onclick="prev_singer()">Prev Singer</div>
-    <div class="button small-button" onclick="next_singer()">Next Singer</div><br><br></div><br><br>
+    <div class="button small-button" onclick="next_singer()">Next Singer</div><br><br>
+</div><br><br>
 {% else %}
-<link rel="stylesheet" href="{{ url_for('static', filename='queue.css') }}"> 
+<link rel="stylesheet" href="{{ url_for('static', filename='queue.css') }}">
 <div class="button-container">
     <div class="button" onclick="clear_queue()">Clear Queue</div>
     <div class="button" onclick="prev_singer()">Prev Singer</div>
-    <div class="button" onclick="next_singer()">Next Singer</div><br><br></div>
+    <div class="button" onclick="next_singer()">Next Singer</div><br><br>
+</div>
 {% endif %}
 <!-- TODO: add song from admin ui -->
 <div id="container">
     <div>
         {% if request.MOBILE %}
         <div class="box wide-box">
-        {% else %}
-        <div class="box">
-        {% endif %}
-            <span class="section-header">
-                User List
-            </span>
-            <!-- <br> -->
-            <hr class="white-divider"/>
-            <br>
-            <div id="queue_list"></div>
+            {% else %}
+            <div class="box">
+                {% endif %}
+                <span class="section-header">
+                    User List
+                </span>
+                <!-- <br> -->
+                <hr class="white-divider" />
+                <br>
+                <div id="queue_list"></div>
+            </div>
         </div>
-    </div>
-    <div>
-        {% if request.MOBILE %}
-        <div class="box wide-box">
-        {% else %}
-        <div class="box">
-        {% endif %}
-            <span class="section-header">Viewing queue for user
-                <span class="invisible-sector">:</span>
-                <span id="user-id">N/A</span>
-            </span>
-            <hr class="white-divider"/><br>
-            <div id="user_queue_list"></div>
+        <div>
+            {% if request.MOBILE %}
+            <div class="box wide-box">
+                {% else %}
+                <div class="box">
+                    {% endif %}
+                    <span class="section-header">Viewing queue for user
+                        <span class="invisible-sector">:</span>
+                        <span id="user-id">N/A</span>
+                    </span>
+                    <hr class="white-divider" /><br>
+                    <div id="user_queue_list"></div>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
-<script type="text/javascript" charset="utf-8">
-    var socket = io();
-    var currentUser = null;
-    function clear_queue(){
-        if (confirm("Are you sure you want to completely clear the queue?")){
-            socket.emit('clear_queue')
-        }
-    }
-    socket.on('connect', function(response) {
-        socket.emit('init_queue', "{{session['username']}}");
-    });
-    socket.on('Queue Init', function(data){
-        iterate(data)
-        init_sortable()
-    });
+        <script type="text/javascript" charset="utf-8">
+            var socket = io();
+            var currentUser = null;
 
-    socket.on('Queue Update', function(data){
-        console.log(data);
-        iterate(data);
-        if (currentUser != null){
-            if (data['order'].indexOf(currentUser) != -1){
-                getUser(currentUser);
-            } else {
-                clearUserQueue();
-                document.getElementById('user-id').innerText = "N/A";
-            }
-        }
-    });
-
-    function next_singer(){
-        socket.emit('Singer Update', "next");
-    }
-
-    function prev_singer(){
-        socket.emit('Singer Update', "prev");
-    }
-
-    function showHideUser(username){
-        socket.emit('Show or Hide User', username);
-    }
-
-    function init_sortable(){
-        var queue_list = document.getElementById('queue_list');
-        var sortable = Sortable.create(queue_list, {onEnd: function (/**Event*/evt) {
-		var itemEls = evt.to.getElementsByTagName('div');
-        let newOrder = []
-        console.log(itemEls)
-        for (i in itemEls){
-            if (itemEls[i].innerText){
-                newOrder.push(itemEls[i].innerText);
-            }
-        }
-        pushNewOrder(newOrder);
-	}});
-    var user_queue_list = document.getElementById('user_queue_list');
-        var sortable = Sortable.create(user_queue_list, {onEnd: function (/**Event*/evt) {
-		var itemEls = evt.to.getElementsByTagName('div');
-        var newOrder = []
-        console.log(itemEls)
-        for (i in itemEls){
-            if (itemEls[i].id){
-                newOrder.push(itemEls[i].id);
-            }
-        }
-        pushNewSongOrder(newOrder);
-	}});
-    }
-    
-    function pushNewOrder(order){
-        socket.emit('Change User Order', JSON.stringify(order));
-    }
-    function pushNewSongOrder(order){
-        let newOrder = {'user':currentUser,'list':order}
-        socket.emit('Change Song Order', JSON.stringify(newOrder));
-    }
-
-    function iterate(queue){
-        clearQueueList();
-        console.log(Object.keys(queue['list']).length)
-        // userlist = document.getElementById('user_list')
-        if (queue['order'].length >= 1){
-            for (let i in queue['order']){
-                let username = queue['order'][i];
-                let isInactive = queue['inactive'].indexOf(username) != -1;
-                let isHidden = queue['hidden'].indexOf(username) != -1;
-                let isActive = queue['active'] == username;
-                addQueueItem(username, isInactive, isHidden, isActive)
-            }
-            // document.getElementById('queue_list').getElementsByTagName('div')[queue['active']].classList.add('active')
-        }
-    }
-   
-    socket.on("User Update Response", function(response){
-        // console.warn(response)
-        clearUserQueue();
-        document.getElementById('user-id').innerText = response['username'];
-        if (response['songs'].length >= 1){
-            for (let i in response['songs']){
-                // console.log(response[i])
-                addToUserQueue(response['songs'][i].song, response['songs'][i].artist, response['songs'][i].id, response['songs'][i].iter);
-            }
-        }
-    });
-
-    function clearQueueList(){
-        let queuelist = document.getElementById('queue_list')
-        queuelist.innerHTML = "";
-    }
-    function clearUserQueue(){
-        let queuelist = document.getElementById('user_queue_list')
-        queuelist.innerHTML = "";
-    }
-
-    function getUser(username){
-        // currentUser = username;
-        console.log(currentUser)
-        socket.emit('Get User', username)
-    }
-
-    function addQueueItem(username, isInactive, isHidden, isActive){
-        let queuelist = document.getElementById('queue_list');
-        let label = document.createElement('div');
-        let hide = document.createElement('div');
-        // hide.src = "{{ url_for('static', filename='assets/eye-open.png') }}";
-        hide.className = "eye-icon"
-        label.className = "queue-item"
-        if (isInactive)
-            label.classList.add("inactive")
-        if (isHidden)
-            label.classList.add("hidden")
-        if (isActive)
-            label.classList.add('active')
-        label.innerText = username;
-        label.appendChild(hide)
-        hide.addEventListener('click', function(e){
-            showHideUser(e.target.parentElement.innerText);
-            e.stopPropagation();
-        });
-        label.addEventListener('click', function(e){
-            currentUser = username;
-            getUser(e.target.innerText)
-        });
-        queuelist.appendChild(label)
-        console.log('done');
-    }
-
-    function deleteSong(id){
-        socket.emit("Delete Song", {"id":id,"user":currentUser})
-    }
-
-    function addToUserQueue(song, artist, id, iter){
-        let queuelist = document.getElementById('user_queue_list');
-        let itemsIn = queuelist.getElementsByTagName('div');
-        let label = document.createElement('div');
-        let trash = document.createElement('img');
-        trash.src = "{{ url_for('static', filename='assets/trashcan.png') }}";
-        trash.className = "trash-icon"
-        label.className = "queue-item"
-        label.setAttribute('order', iter)
-        label.innerText = song + " - " + artist;
-        label.id = id;
-        label.appendChild(trash)
-        trash.addEventListener('click', function(e){
-            if (confirm("Delete Song \"" + e.target.parentElement.innerText + "\"?"))
-                deleteSong(e.target.parentElement.id);
-                e.stopPropagation();
-        });
-        if (itemsIn.length == 0){
-            queuelist.appendChild(label)
-        } else {
-            for (let i = 0;i<itemsIn.length;i++){
-                let ele = itemsIn[i];
-                if (ele.getAttribute('order') > iter){
-                    queuelist.insertBefore(label, ele);
-                    return;
+            function clear_queue() {
+                if (confirm("Are you sure you want to completely clear the queue?")) {
+                    socket.emit('clear_queue')
                 }
             }
-            queuelist.appendChild(label)
-        }
-        // console.log('done');
-    }
-</script>
-{% endif %}
-{% endblock %}
+            socket.on('connect', function (response) {
+                socket.emit('init_queue', "{{session['username']}}");
+            });
+            socket.on('Queue Init', function (data) {
+                iterate(data)
+                init_sortable()
+            });
+
+            socket.on('Queue Update', function (data) {
+                console.log(data);
+                iterate(data);
+                if (currentUser != null) {
+                    if (data['order'].indexOf(currentUser) != -1) {
+                        getUser(currentUser);
+                    } else {
+                        clearUserQueue();
+                        document.getElementById('user-id').innerText = "N/A";
+                    }
+                }
+            });
+
+            function next_singer() {
+                socket.emit('Singer Update', "next");
+            }
+
+            function prev_singer() {
+                socket.emit('Singer Update', "prev");
+            }
+
+            function showHideUser(username) {
+                socket.emit('Show or Hide User', username);
+            }
+
+            function init_sortable() {
+                var queue_list = document.getElementById('queue_list');
+                var sortable = Sortable.create(queue_list, {
+                    onEnd: function ( /**Event*/ evt) {
+                        var itemEls = evt.to.getElementsByTagName('div');
+                        let newOrder = []
+                        console.log(itemEls)
+                        for (i in itemEls) {
+                            if (itemEls[i].innerText) {
+                                newOrder.push(itemEls[i].innerText);
+                            }
+                        }
+                        pushNewOrder(newOrder);
+                    }
+                });
+                var user_queue_list = document.getElementById('user_queue_list');
+                var sortable = Sortable.create(user_queue_list, {
+                    onEnd: function ( /**Event*/ evt) {
+                        var itemEls = evt.to.getElementsByTagName('div');
+                        var newOrder = []
+                        console.log(itemEls)
+                        for (i in itemEls) {
+                            if (itemEls[i].id) {
+                                newOrder.push(itemEls[i].id);
+                            }
+                        }
+                        pushNewSongOrder(newOrder);
+                    }
+                });
+            }
+
+            function pushNewOrder(order) {
+                socket.emit('Change User Order', JSON.stringify(order));
+            }
+
+            function pushNewSongOrder(order) {
+                let newOrder = {
+                    'user': currentUser,
+                    'list': order
+                }
+                socket.emit('Change Song Order', JSON.stringify(newOrder));
+            }
+
+            function iterate(queue) {
+                clearQueueList();
+                console.log(Object.keys(queue['list']).length)
+                // userlist = document.getElementById('user_list')
+                if (queue['order'].length >= 1) {
+                    for (let i in queue['order']) {
+                        let username = queue['order'][i];
+                        let isInactive = queue['inactive'].indexOf(username) != -1;
+                        let isHidden = queue['hidden'].indexOf(username) != -1;
+                        let isActive = queue['active'] == username;
+                        addQueueItem(username, isInactive, isHidden, isActive)
+                    }
+                    // document.getElementById('queue_list').getElementsByTagName('div')[queue['active']].classList.add('active')
+                }
+            }
+
+            socket.on("User Update Response", function (response) {
+                // console.warn(response)
+                clearUserQueue();
+                document.getElementById('user-id').innerText = response['username'];
+                if (response['songs'].length >= 1) {
+                    for (let i in response['songs']) {
+                        // console.log(response[i])
+                        addToUserQueue(response['songs'][i].song, response['songs'][i].artist, response['songs']
+                            [i].id, response['songs'][i].iter);
+                    }
+                }
+            });
+
+            function clearQueueList() {
+                let queuelist = document.getElementById('queue_list')
+                queuelist.innerHTML = "";
+            }
+
+            function clearUserQueue() {
+                let queuelist = document.getElementById('user_queue_list')
+                queuelist.innerHTML = "";
+            }
+
+            function getUser(username) {
+                // currentUser = username;
+                console.log(currentUser)
+                socket.emit('Get User', username)
+            }
+
+            function addQueueItem(username, isInactive, isHidden, isActive) {
+                let queuelist = document.getElementById('queue_list');
+                let label = document.createElement('div');
+                let hide = document.createElement('div');
+                // hide.src = "{{ url_for('static', filename='assets/eye-open.png') }}";
+                hide.className = "eye-icon"
+                label.className = "queue-item"
+                if (isInactive)
+                    label.classList.add("inactive")
+                if (isHidden)
+                    label.classList.add("hidden")
+                if (isActive)
+                    label.classList.add('active')
+                label.innerText = username;
+                label.appendChild(hide)
+                hide.addEventListener('click', function (e) {
+                    showHideUser(e.target.parentElement.innerText);
+                    e.stopPropagation();
+                });
+                label.addEventListener('click', function (e) {
+                    currentUser = username;
+                    getUser(e.target.innerText)
+                });
+                queuelist.appendChild(label)
+                console.log('done');
+            }
+
+            function deleteSong(id) {
+                socket.emit("Delete Song", {
+                    "id": id,
+                    "user": currentUser
+                })
+            }
+
+            function addToUserQueue(song, artist, id, iter) {
+                let queuelist = document.getElementById('user_queue_list');
+                let itemsIn = queuelist.getElementsByTagName('div');
+                let label = document.createElement('div');
+                let trash = document.createElement('img');
+                trash.src = "{{ url_for('static', filename='assets/trashcan.png') }}";
+                trash.className = "trash-icon"
+                label.className = "queue-item"
+                label.setAttribute('order', iter)
+                label.innerText = song + " - " + artist;
+                label.id = id;
+                label.appendChild(trash)
+                trash.addEventListener('click', function (e) {
+                    if (confirm("Delete Song \"" + e.target.parentElement.innerText + "\"?"))
+                        deleteSong(e.target.parentElement.id);
+                    e.stopPropagation();
+                });
+                if (itemsIn.length == 0) {
+                    queuelist.appendChild(label)
+                } else {
+                    for (let i = 0; i < itemsIn.length; i++) {
+                        let ele = itemsIn[i];
+                        if (ele.getAttribute('order') > iter) {
+                            queuelist.insertBefore(label, ele);
+                            return;
+                        }
+                    }
+                    queuelist.appendChild(label)
+                }
+                // console.log('done');
+            }
+        </script>
+        {% endif %}
+        {% endblock %}

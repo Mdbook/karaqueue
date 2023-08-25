@@ -1,18 +1,18 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="center-padder">
-{% if session['logged_in'] %}
-<div class="box wide-box">
-   
-	{% if data %}
-	<h3>{{data}}</h3>
-	{% else %}
+	{% if session['logged_in'] %}
+	<div class="box wide-box">
+
+		{% if data %}
+		<h3>{{data}}</h3>
+		{% else %}
 		<span class="section-header">
 			<span>
 
-				Logged in as {{session['username']}}. 
+				Logged in as {{session['username']}}.
 			</span>
-			<a href="/logout">Logout</a> | <a href="/reset-password">Reset Password</a> <br> 
+			<a href="/logout">Logout</a> | <a href="/reset-password">Reset Password</a> <br>
 		</span>
 		<hr class="white-divider">
 		{% if newsong %}
@@ -28,7 +28,7 @@
 		<div class="button-container">
 			<a class="button light-button" href="/request">Request a Song</a>
 			{% if session['admin'] %}
-			<a class="button light-button" href="/users">User Admin</a> 
+			<a class="button light-button" href="/users">User Admin</a>
 			{% endif %}
 			<a class="button light-button" href="/queue">
 				{% if not session['admin'] %}
@@ -36,27 +36,27 @@
 				{% else %}
 				Edit
 				{% endif %}
-				
-				Queue</a> 
-				
-				{% endif %}
+
+				Queue</a>
+
+			{% endif %}
 		</div>
-			
-		</div>
-{% else %}
-<div class="box wide-box">
+
+	</div>
+	{% else %}
+	<div class="box wide-box">
 		<span class="section-header">
-Welcome to KaraQueue!
+			Welcome to KaraQueue!
 		</span>
 		<hr class="white-divider"><br><br>
 		<div class="button-container">
 			<span></span>
-			<a class="button light-button" href="/login">Returning User</a> 
+			<a class="button light-button" href="/login">Returning User</a>
 			<a class="button light-button" href="/register">New User</a>
 			<span></span>
-			
+
 		</div>
 
-{% endif %}
+		{% endif %}
 	</div>
-{% endblock %}
+	{% endblock %}

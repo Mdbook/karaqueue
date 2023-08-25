@@ -1,179 +1,205 @@
-html,body {
-    background:#0E141B;
-    color:#0E141B;
+html,
+body {
+    background: #0E141B;
+    color: #0E141B;
     font-family: 'Nunito', sans-serif;
     /* font-size:16px;; */
 }
+
 a {
-    color:lightblue;
-}
-.button-container {
-    display:flex;
-    justify-content:space-around;
-    height:70%;
-    /* padding-top:1em; */
-    flex-flow:column;
-    padding-bottom:2em;
-    width:100%;
+    color: lightblue;
 }
 
-.title{
-    font-size:7em;
-    margin:10px;
-    color:lightgray;
+.button-container {
+    display: flex;
+    justify-content: space-around;
+    height: 70%;
+    /* padding-top:1em; */
+    flex-flow: column;
+    padding-bottom: 2em;
+    width: 100%;
 }
+
+.title {
+    font-size: 7em;
+    margin: 10px;
+    color: lightgray;
+}
+
 input {
-    margin:5px;
+    margin: 5px;
 }
+
 .button {
-    align-self:center;
-    margin-left:10px;
-    cursor:pointer;
-    background:#34495E;
-    color:white;
-    outline:none;
-    border:none;
-    border-radius:2px;
-    padding-left:1.3em;
-    padding-right:1.3em;
-    padding-top:1em;
-    padding-bottom:1em;
-    font-size:5em;
-    user-select:none;
-    -webkit-user-select:none;
-    width:100%;
-    text-align:center;
+    align-self: center;
+    margin-left: 10px;
+    cursor: pointer;
+    background: #34495E;
+    color: white;
+    outline: none;
+    border: none;
+    border-radius: 2px;
+    padding-left: 1.3em;
+    padding-right: 1.3em;
+    padding-top: 1em;
+    padding-bottom: 1em;
+    font-size: 5em;
+    user-select: none;
+    -webkit-user-select: none;
+    width: 100%;
+    text-align: center;
     /* border:1px solid lightgray; */
 }
+
 .button-container .button {
-    width:50%;
-    font-size:4em;
-    text-decoration:none;
+    width: 50%;
+    font-size: 4em;
+    text-decoration: none;
 }
 
-.input{
-    background:#81d9ff;
-    color:#0E141B;
-    width:100%;
-    border:none;
-    font-size:3em;
-    padding:1em;
-}
-.input::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+.input {
+    background: #81d9ff;
     color: #0E141B;
-    opacity: 0.7; /* Firefox */
-  }
+    width: 100%;
+    border: none;
+    font-size: 3em;
+    padding: 1em;
+}
+
+.input::placeholder {
+    /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: #0E141B;
+    opacity: 0.7;
+    /* Firefox */
+}
+
 .button:active {
-    background:#5D6D7E;
+    background: #5D6D7E;
 }
+
 .light-button {
-    background:#81d9ff;
-    color:#0E141B;
+    background: #81d9ff;
+    color: #0E141B;
 }
+
 .light-button:active {
-    background:white;
+    background: white;
 }
+
 .place-in-line {
-    display:flex;
-    font-size:2em;
-    text-align:right;
+    display: flex;
+    font-size: 2em;
+    text-align: right;
 }
+
 .box {
-    display:flex;
-    flex-flow:column;
-    margin-bottom:1em;
-    background:#34495E;
+    display: flex;
+    flex-flow: column;
+    margin-bottom: 1em;
+    background: #34495E;
     /* align-items:center; */
     /* justify-content:center; */
-    width:30%;
+    width: 30%;
     /* border:1px solid white; */
-    border-radius:0.5em;
-    padding-top:2em;
-    padding-bottom:2em;
-    padding-left:1.5em;
-    padding-right:1.5em;
+    border-radius: 0.5em;
+    padding-top: 2em;
+    padding-bottom: 2em;
+    padding-left: 1.5em;
+    padding-right: 1.5em;
     /* max-height:70%; */
-    height:80%;
-    min-width:20em;
+    height: 80%;
+    min-width: 20em;
     /* min-height:10em; */
 }
-.wide-box{
-    width:90%;
-    height:80%;
+
+.wide-box {
+    width: 90%;
+    height: 80%;
 }
-.button-row{
-    display:flex;
-    flex-flow:row;
-    justify-content:space-around;
+
+.button-row {
+    display: flex;
+    flex-flow: row;
+    justify-content: space-around;
 }
+
 button {
-    text-decoration:none;
-    padding:10px;
-    cursor:pointer;
+    text-decoration: none;
+    padding: 10px;
+    cursor: pointer;
     background: #34495E;
-    border-radius:3px;
-    display:flex;
-    font-size:40px;
+    border-radius: 3px;
+    display: flex;
+    font-size: 40px;
     /* border:1px solid lightgray; */
 }
 
 .error {
-    color:rgb(222, 116, 116);
-    font-size:2em;
-    text-align:center;
+    color: rgb(222, 116, 116);
+    font-size: 2em;
+    text-align: center;
 }
+
 .success {
-    color:rgb(138, 203, 138);
-    font-size:2em;
-    text-align:center;
+    color: rgb(138, 203, 138);
+    font-size: 2em;
+    text-align: center;
 }
+
 .pageTitle {
-    font-size:40px;
+    font-size: 40px;
 }
+
 input {
     color: white;
-    background:#3e3e3e;
-    border:1px solid lightgray;
-    border-radius:1px;
-    padding:4px;
+    background: #3e3e3e;
+    border: 1px solid lightgray;
+    border-radius: 1px;
+    padding: 4px;
 }
-hr{
-    background:gray;
-    border:1px solid gray;
+
+hr {
+    background: gray;
+    border: 1px solid gray;
 }
-.white-divider{
-    border-top:0.6em solid white;
-    margin-bottom:3em;
-    border-bottom:none;
-    background:none;
-    width:90%;
+
+.white-divider {
+    border-top: 0.6em solid white;
+    margin-bottom: 3em;
+    border-bottom: none;
+    background: none;
+    width: 90%;
 }
-.invisible-sector{
-    opacity:0;
-    user-select:none;
-    -webkit-user-select:none;
+
+.invisible-sector {
+    opacity: 0;
+    user-select: none;
+    -webkit-user-select: none;
 }
+
 .section-header {
     /* display:flex; */
     /* display:flex; */
-    text-align:center;
+    text-align: center;
     /* justify-self: center; */
-    color:white;
-    font-size:4.5em;
-    padding-bottom:1em;
+    color: white;
+    font-size: 4.5em;
+    padding-bottom: 1em;
 }
-.center-padder{
-    padding-top:4%;
-    width:100%;
-    height:90%;
-    display:flex;
-    justify-content:center;
+
+.center-padder {
+    padding-top: 4%;
+    width: 100%;
+    height: 90%;
+    display: flex;
+    justify-content: center;
 }
-.head-center{
-    width:100%;
-    display:flex;
-    flex-flow:row;
-    justify-content:space-between;
-    align-items:center;
-    color:lightgray;
+
+.head-center {
+    width: 100%;
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+    align-items: center;
+    color: lightgray;
 }
