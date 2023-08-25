@@ -6,14 +6,15 @@
 <div class="pageTitle">Register</div>
 <div class="center-padder">
 
-{% if userExists %}
-<span class="error">User already exists. Please pick another username.</span><br><br>
-{% else %}
-<br><br>
-{% endif %}
-<div class="box wide-box">
-  <span class="section-header">Register</span>
-  <hr class="white-divider"/>
+  <div class="box wide-box">
+    <span class="section-header">Register</span>
+    <hr class="white-divider"/>
+    {% if userExists %}
+    <br>
+    <span class="error">User already exists. Please pick another username.</span>
+    {% else %}
+    <br><br>
+    {% endif %}
 <form style="display:flex;justify-content:flex-start;flex-flow:column;" action="/register/" method="POST">
   <input class="input" type="username" name="username" placeholder="Stage Name">
   <input class="input" type="password" name="password" placeholder="Password">

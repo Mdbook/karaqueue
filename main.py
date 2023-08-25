@@ -29,7 +29,9 @@ def home():
     """ Session control"""
     if "req" in request.args.keys() and request.args['req'] == "true":
         return render_template('index.html', newsong=True)
-    return render_template('index.html', newsong=False)
+    elif "passreset" in request.args.keys() and request.args['passreset'] == "true":
+        return render_template('index.html', passwordchange=True)
+    return render_template('index.html')
 
 @app.route('/reset-password', methods=['GET', 'POST'])
 @authenticated_only
@@ -47,7 +49,7 @@ def reset_password():
                 data = User.query.filter_by(username=session['username'], password=request.form['curPassword']).first()
                 if data is not None:
                     reset_password_for_user(session['username'], request.form['newPassword'])
-                    return redirect(url_for('home'))
+                    return redirect(url_for('home') + "?passreset=true")
                 else:
                     return render_template('reset-password.html', passwordIncorrect=True)
             else:
@@ -55,11 +57,11 @@ def reset_password():
         elif 'username' in request.form.keys() and 'newPassword' in request.form.keys():
                 if session['admin']:
                     reset_password_for_user(request.form['username'], request.form['newPassword'])
-                    return redirect(url_for('home'))
+                    return redirect(url_for('home') + "?passreset=true")
                 else:
                     return 'Unauthorized', 503
         else:
-            print(request.form.keys())
+            # print(request.form.keys())
             return render_template('reset-password.html')
     return render_template('reset-password.html')
 
@@ -123,7 +125,7 @@ def register():
             return render_template('register.html', userExists=True)
         else:
             create_user(request.form['username'], request.form['password'])
-            return render_template('login.html')
+            return render_template('login.html',accountcreated=True)
     return render_template('register.html')
 
 

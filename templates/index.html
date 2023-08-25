@@ -16,7 +16,11 @@
 		</span>
 		<hr class="white-divider">
 		{% if newsong %}
-		<span class="success">Song request received.</span><br>
+		<br>
+		<span class="success">Song request received.</span>
+		{% elif passwordchange %}
+		<br>
+		<span class="success">Password changed successfully.</span>
 		{% else %}
 		<br>
 		{% endif %}

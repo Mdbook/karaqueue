@@ -99,9 +99,11 @@ button {
 
 .error {
     color:rgb(222, 116, 116);
+    text-align:center;
 }
 .success {
     color:rgb(138, 203, 138);
+    text-align:center;
 }
 .pageTitle {
     font-size:40px;

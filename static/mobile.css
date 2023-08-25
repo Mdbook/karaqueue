@@ -2,6 +2,7 @@ html,body {
     background:#0E141B;
     color:#0E141B;
     font-family: 'Nunito', sans-serif;
+    /* font-size:16px;; */
 }
 a {
     color:lightblue;
@@ -118,9 +119,13 @@ button {
 
 .error {
     color:rgb(222, 116, 116);
+    font-size:2em;
+    text-align:center;
 }
 .success {
     color:rgb(138, 203, 138);
+    font-size:2em;
+    text-align:center;
 }
 .pageTitle {
     font-size:40px;
