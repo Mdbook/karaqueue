@@ -10,7 +10,7 @@
     height: 40px;
     display: flex;
     align-self: center;
-    justify-self:flex-end;
+    justify-self: flex-end;
     right: 5px;
     /* opacity:0; */
     transition: 0.1s;
@@ -55,6 +55,7 @@
 
 .inactive {
     background: rgb(35, 24, 24);
+    border-right:1em solid rgb(35, 24, 24);
     color: lightgray;
 }
 
@@ -66,10 +67,10 @@
     height: 40px;
     width: 40px;
     display: flex;
-    opacity:1;
+    opacity: 1;
     /* opacity:0.2; */
     justify-self: flex-end;
-    align-self:center;
+    align-self: center;
     right: 5px;
     /* opacity:0; */
     transition: 0.1s;
@@ -115,83 +116,92 @@ button {
 .small-button {
     font-size: 3em;
 }
-.side-toggle{
-    text-align:center;
-    margin-right:1em;
-    font-size:3em;
-    color:lightgray;
-    margin-bottom:1em;
-    }
-    ul,
-    li {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-    }
-    
-    .tgl {
-        display: none;
-      
-        &,
-      &:after,
-      &:before,
-        & *,
-      & *:after,
-      & *:before,
-        & + .tgl-btn {
-            box-sizing: border-box;
-            &::selection {
-                background: none;
-            }
+
+.side-toggle {
+    text-align: center;
+    margin-right: 1em;
+    font-size: 3em;
+    color: lightgray;
+    margin-bottom: 1em;
+}
+
+ul,
+li {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.tgl {
+    display: none;
+
+    &,
+    &:after,
+    &:before,
+    & *,
+    & *:after,
+    & *:before,
+    &+.tgl-btn {
+        box-sizing: border-box;
+
+        &::selection {
+            background: none;
         }
-      
-        + .tgl-btn {
-            outline: 0;
-            display: inline-block;
-            width: 2em;
-            height: 1em;
-            position: relative;
-            /* float:right; */
-            top:0.2em;
-            cursor: pointer;
+    }
+
+    +.tgl-btn {
+        outline: 0;
+        display: inline-block;
+        width: 2em;
+        height: 1em;
+        position: relative;
+        /* float:right; */
+        top: 0.2em;
+        cursor: pointer;
         user-select: none;
-            &:after,
+
+        &:after,
         &:before {
-                position: relative;
-                display: block;
-                content: "";
-                width: 50%;
-                height: 100%;
-            }
-        
-            &:after {
-                left: 0;
-            }
-        
-            &:before {
-                display: none;
-            }
+            position: relative;
+            display: block;
+            content: "";
+            width: 50%;
+            height: 100%;
         }
-      
-        &:checked + .tgl-btn:after {
-            left: 50%;
+
+        &:after {
+            left: 0;
+        }
+
+        &:before {
+            display: none;
         }
     }
-    
-    .tgl-light {
-        + .tgl-btn {
-            background: #a8a8a8;
-            border-radius: 2em;
-            padding: 2px;
-            transition: all .4s ease;
-            &:after {
-                border-radius: 50%;
-                background: #fff;
-                transition: all .2s ease;
-            }
-        }
-      
-        &:checked + .tgl-btn {
-            background: #9FD6AE;
+
+    &:checked+.tgl-btn:after {
+        left: 50%;
+    }
+}
+
+.tgl-light {
+    +.tgl-btn {
+        background: #a8a8a8;
+        border-radius: 2em;
+        padding: 2px;
+        transition: all .4s ease;
+
+        &:after {
+            border-radius: 50%;
+            background: #fff;
+            transition: all .2s ease;
         }
     }
+
+    &:checked+.tgl-btn {
+        background: #9FD6AE;
+    }
+}
+
+.display-hidden {
+    display: none;
+}
