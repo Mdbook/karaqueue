@@ -75,6 +75,18 @@ def update_queue():
     socketapp.emit("Queue Update", queue)
 
 
+@socketapp.on('Add Song for User')
+@admin_only
+def add_for_user(data):
+    print(data)
+    # data = json.loads(data)
+    username = data['username']
+    song = data['song']
+    author = data['artist']
+    req = new_request(username, song, author)
+    add_to_queue(req)
+    update_queue()
+
 @socketapp.on('init_queue')
 @admin_only
 def init(username):

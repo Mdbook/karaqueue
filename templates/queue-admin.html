@@ -52,7 +52,12 @@
                         <span id="user-id">N/A</span>
                     </span>
                     <hr class="white-divider" /><br>
-                    <div id="user_queue_list"></div>
+                    <div id="user_queue_list"></div><br>
+                    <span id="add-song-button" style="display:none;">
+                        <hr class="white-divider"/>
+                        <br>
+                        <span class="button light-button" onclick="addSong()">Add song</span>
+                    </span>
                 </div>
             </div>
         </div>
@@ -72,6 +77,21 @@
                     }
                 }
             });
+            function addSong(){
+                let song = prompt("Song name:");
+                if (!song) {
+                    return
+                }
+                let artist = prompt('Artist:');
+                if (!artist){
+                    return
+                }
+                socket.emit("Add Song for User", {
+                    "username":currentUser,
+                    "song":song,
+                    "artist":artist
+                })
+            }
             function clear_queue() {
                 if (confirm("Are you sure you want to completely clear the queue?")) {
                     socket.emit('clear_queue')
@@ -265,6 +285,7 @@
                     }
                     queuelist.appendChild(label)
                 }
+                document.getElementById('add-song-button').style.display = "block";
                 // console.log('done');
             }
         </script>
