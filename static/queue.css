@@ -199,3 +199,27 @@ li {
 .display-hidden {
     display: none;
 }
+
+#queue-container {
+    min-height: 10em;
+    max-height: 30em;
+}
+
+.scrollable-inner {
+    overflow-y: scroll;
+    max-height: 100%;
+}
+
+#queue_list .queue-item {
+    padding-top: 0.2em;
+    padding-bottom: 0.2em;
+}
+
+#queue-control {
+    position: fixed;
+    background: #0E141B;
+    z-index: 10;
+}
+#user_queue_list {
+    width:20em;
+}

@@ -18,20 +18,22 @@
 </head>
 
 <body>
-  <div class="head-center">
-    <a class="title" href="/">KaraQueue</a>
-    <span>
-      {% if session['logged_in'] %}
-      <span class="place-in-line">
-        <span>Current place in line: <span id="line-placeholder"></span></span>
+  <div style="position:fixed;top:0;width:100%;background:#0E141B;z-index:10;">
+    <div class="head-center">
+      <a class="title" href="/">KaraQueue</a>
+      <span>
+        {% if session['logged_in'] %}
+        <span class="place-in-line">
+          <span>Current place in line: <span id="line-placeholder"></span></span>
+        </span>
+        {% endif %}
       </span>
-      {% endif %}
-    </span>
-    <div style="width:10%"></div>
+      <div style="width:10%"></div>
+    </div>
+    <hr>
   </div>
-
-  <hr>
-
+  <br><br><br>
+  <script src="{{ url_for('static', filename='js/utils.js') }}" type="text/javascript"></script>
 
   {% block content %}{% endblock %}
 </body>
