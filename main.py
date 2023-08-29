@@ -4,7 +4,7 @@ import functools
 from flask_mobility import Mobility
 from users import User, db, test_admin
 from socket_worker import socketapp, app, create_user, reset_password_for_user
-from queue_worker import add_to_queue, new_request
+from queue_worker import Queue
 
 def admin_only(f):
     @functools.wraps(f)
@@ -88,8 +88,8 @@ def requestsong():
             return render_template('request.html')
         song = request.form['song']
         author = request.form['author']
-        req = new_request(username, song, author)
-        add_to_queue(req)
+        Queue.Request(username, song, author)
+        # TODO update user data if admin is viewing user
         session['request'] = True
         return redirect(url_for('home') + "?req=true")
 
@@ -143,7 +143,9 @@ if __name__ == '__main__':
     app.secret_key = "123"
     socketapp.run(app, host="0.0.0.0")
 
-
+@app.errorhandler(404)
+def not_found(e):
+  return redirect(url_for('home'))
 
 # @socketio.on('my event')
 # def handle_my_custom_event(json):
