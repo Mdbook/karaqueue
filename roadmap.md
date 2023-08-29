@@ -1,0 +1,11 @@
+- [x] 404 Remap
+- [x] Admin UI fixes
+- [x] Object Oriented Programming rewrite
+- [ ] Allow pausing of submissions 
+- [ ] Input sanitization including SQL injection
+- [ ] More admin features
+- [ ] More admin UI fixes
+- [ ] Youtube Integration + player
+- [ ] KaraFun Integration
+- [ ] Local file integration
+
