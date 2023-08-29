@@ -83,7 +83,7 @@ def init_user():
 def clear_queue():
     print("Clearing the queue")
     Queue.Wipe()
-    socketapp.emit("Queue Update", queue)
+    socketapp.emit("Queue Update", Queue.Export())
 
 @socketapp.on('Change User Order')
 @admin_only
