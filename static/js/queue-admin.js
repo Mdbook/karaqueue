@@ -131,7 +131,7 @@ function iterate(queue) {
 socket.on("User Update Response", function (response) {
     // console.warn(response)
     clearUserQueue();
-    document.getElementById('user-id').innerText = trimString(response['username'], 16);
+    document.getElementById('user-id').innerText = trimString(response['username'], 14);
     document.getElementById('user-id').title = response['username'];
     if (response['songs'].length >= 1) {
         for (let i in response['songs']) {
