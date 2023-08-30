@@ -21,9 +21,13 @@ a {
 }
 
 .title {
-    font-size: 7em;
-    margin: 10px;
+    /* font-size: 7em; */
+    /* margin: 10px; */
     color: lightgray;
+}
+
+.title img {
+    height:5em;
 }
 
 input {

@@ -18,11 +18,14 @@ a {
 }
 
 .title {
-    font-size: 30px;
-    margin: 10px;
+    /* font-size: 30px; */
+    /* margin: 10px; */
     color: lightgray;
 }
 
+.title img {
+    height:4em;
+}
 input {
     margin: 5px;
 }
