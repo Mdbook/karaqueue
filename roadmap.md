@@ -2,6 +2,7 @@
 - [x] Admin UI fixes
 - [x] Object Oriented Programming rewrite
 - [ ] Allow pausing of submissions 
+- [ ] CSS Color standardization w global variables
 - [ ] Input sanitization including SQL injection
 - [ ] More admin features
 - [ ] More admin UI fixes
