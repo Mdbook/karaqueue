@@ -1,6 +1,7 @@
 - [x] 404 Remap
 - [x] Admin UI fixes
 - [x] Object Oriented Programming rewrite
+- [ ] Make usernames not case sensitive when logging in
 - [ ] Allow pausing of submissions 
 - [ ] CSS Color standardization w global variables
 - [ ] Input sanitization including SQL injection
