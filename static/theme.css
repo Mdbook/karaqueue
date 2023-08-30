@@ -1,0 +1,19 @@
+:root {
+    --background:#161413;
+    --text-dark:#0E141B;
+    --background-shader: #5E4234;
+    --background-shader-darker: #30221B;
+    --background-shader-lighter: #856453;
+    /* --primary: #FFB181;  */
+    --text-light: #D8CCB9;
+    --text-lighter: #EFE4D3;
+    --text-light-darker:#B8AC99;
+    --text-light-saturated: #EBC890;
+    --primary: #CC9C50;
+    --primary-alt: #867566;
+    --primary-darker: #A27A3A;
+    --primary-lighter: #E4B365;
+    --accent-select: #BA8DC8;
+    --accent-select-lighter: #DAAAE9;
+  }
+  

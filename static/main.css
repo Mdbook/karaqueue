@@ -1,12 +1,14 @@
 html,
 body {
-    background: #0E141B;
-    color: #0E141B;
+    background: var(--background);
+    color: var(--text-dark);
     font-family: 'Nunito', sans-serif;
 }
-
+.head-container{
+    position:fixed;top:0;width:100%;background:var(--background);z-index:10;
+}
 a {
-    color: lightblue;
+    color: var(--text-light-saturated);
 }
 
 .button-container {
@@ -20,7 +22,7 @@ a {
 .title {
     /* font-size: 30px; */
     /* margin: 10px; */
-    color: lightgray;
+    color: var(--text-light);
 }
 
 .title img {
@@ -34,7 +36,7 @@ input {
     align-self: flex-end;
     margin-left: 10px;
     cursor: pointer;
-    background: #34495E;
+    background: var(--background-shader);
     color: white;
     outline: none;
     border: none;
@@ -50,37 +52,38 @@ input {
 }
 
 .input {
-    background: #81d9ff;
-    color: #0E141B;
+    background: var(--primary);
+    color: var(--text-dark);
     border: none;
     padding: 1em;
 }
 
 .input::placeholder {
     /* Chrome, Firefox, Opera, Safari 10.1+ */
-    color: #0E141B;
+    color: var(--text-dark);
     opacity: 0.7;
     /* Firefox */
 }
 
 .button:hover {
-    background: #5D6D7E;
+    background: var(--background-shader-lighter);
 }
 
 .light-button {
-    background: #81d9ff;
-    color: #0E141B;
+    background: var(--primary);
+    color: var(--text-dark);
 }
 
 .light-button:hover {
-    background: white;
+    background: var(--primary-lighter);
 }
 
 .box {
     display: flex;
     margin-bottom: 1em;
     flex-flow: column;
-    background: #34495E;
+    background: var(--background-shader-darker);
+    border:1px solid var(--primary);
     /* justify-content:center; */
     width: 30%;
     /* border:1px solid white; */
@@ -139,12 +142,12 @@ input {
 }
 
 hr {
-    background: gray;
-    border: 1px solid gray;
+    background: black;
+    border: 1px solid var(--text-light-saturated);
 }
 
 .white-divider {
-    border-top: 1px solid white;
+    border-top: 1px solid var(--text-light);
     border-bottom: none;
     background: none;
     width: 90%;
@@ -161,7 +164,7 @@ hr {
     /* align-self:center; */
     text-align: center;
     /* justify-self: center; */
-    color: white;
+    color: var(--text-lighter);
     font-size: 18;
     padding-bottom: 1em;
 }
@@ -179,5 +182,5 @@ hr {
     flex-flow: row;
     justify-content: space-between;
     align-items: center;
-    color: lightgray;
+    color: var(--text-light);
 }

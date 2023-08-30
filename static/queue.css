@@ -32,11 +32,11 @@
 .queue-item {
     cursor: move;
     /* border-radius:0.5em; */
-    background: #81d9ff;
+    background: var(--primary);
     display: flex;
     justify-content: space-between;
     align-self: center;
-    border-left: 1em solid #4b8097;
+    border-left: 1em solid var(--primary-darker);
     padding: 1em;
     /* border:1px solid gray; */
     margin: 5px;
@@ -44,7 +44,7 @@
 }
 
 .queue-item:hover {
-    background: #91deff;
+    background: var(--primary-lighter);
 }
 
 .sortable-chosen {
@@ -53,7 +53,7 @@
 
 .inactive {
     background: rgb(114, 72, 72);
-    color: lightgray;
+    color: var(--text-light-darker);
 }
 
 .hidden {
@@ -91,11 +91,11 @@ button {
 }
 
 .active {
-    background: #adf8cc;
+    background: var(--accent-select);
 }
 
 .active:hover {
-    background: #baffd7;
+    background: var(--accent-select-lighter);
 }
 
 .active .eye-icon {
@@ -103,20 +103,20 @@ button {
 }
 
 .sortable-ghost {
-    color: #212F3D;
-    background: #212F3D;
-    border-left: 1em solid #212F3D;
+    color: var(--background);
+    background: var(--background);
+    border-left: 1em solid var(--background);
 }
 
 .inactive:hover {
     background: rgb(90, 57, 57);
-    color: lightgray;
+    color: var(--text-light-darker);
 }
 
 .side-toggle {
     text-align: center;
     margin-right: 1em;
-    color: lightgray;
+    color: var(--text-light-darker);
 }
 
 ul,
