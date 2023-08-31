@@ -1,22 +1,21 @@
 :root {
-    --background:#161413;
-    --text-dark:#0E141B;
-    --background-shader: #5E4234;
-    --background-shader-darker: #30221B;
-    --background-shader-lighter: #856453;
-    /* --primary: #FFB181;  */
-    --text-light: #D8CCB9;
-    --text-lighter: #EFE4D3;
-    --text-light-darker:#B8AC99;
-    --text-light-saturated: #EBC890;
-    --primary: #CC9C50;
-    --primary-alt: #867566;
-    --primary-darker: #A27A3A;
-    --primary-lighter: #E4B365;
-    --accent-select: #BA8DC8;
-    --accent-select-lighter: #DAAAE9;
-    --error: rgb(222, 116, 116);
-    --success: rgb(138, 203, 138);
-    --inactive:rgb(114, 72, 72);
-  }
-  
+  --background: #161413;
+  --text-dark: #0e141b;
+  --background-shader: #5e4234;
+  --background-shader-darker: #30221b;
+  --background-shader-lighter: #856453;
+  /* --primary: #FFB181;  */
+  --text-light: #d8ccb9;
+  --text-lighter: #efe4d3;
+  --text-light-darker: #b8ac99;
+  --text-light-saturated: #ebc890;
+  --primary: #cc9c50;
+  --primary-alt: #867566;
+  --primary-darker: #a27a3a;
+  --primary-lighter: #e4b365;
+  --accent-select: #ba8dc8;
+  --accent-select-lighter: #daaae9;
+  --error: rgb(222, 116, 116);
+  --success: rgb(138, 203, 138);
+  --inactive: rgb(114, 72, 72);
+}

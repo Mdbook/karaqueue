@@ -8,6 +8,7 @@ Queue = KaraQueue()
 if os.path.exists(Queue.path):
     Queue.Load()
 
+
     # f = open("data/queue.json", "w")
     # f.write(DEFAULT_QUEUE)
     # f.close()
