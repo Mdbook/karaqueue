@@ -58,6 +58,7 @@
     order = data['order'];
     currentlyUp = data['singer'];
     element = document.getElementById('line-placeholder');
+    console.log(order)
     if (currentlyUp == username) {
       element.innerText = "You're up!"
     } else if (order.indexOf(username) != -1) {

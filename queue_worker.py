@@ -224,7 +224,8 @@ def requested_order_status(username):
 #     update_queue()
 
 def update_order():
-    socketapp.emit("Order Status", Queue.GetActiveUsers())
+    print(Queue.GetActiveUsers())
+    socketapp.emit("Order Status", get_order_data())
 
 def get_order_data():
     order = Queue.GetActiveUsers()
