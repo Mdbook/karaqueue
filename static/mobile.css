@@ -1,13 +1,13 @@
 html,
 body {
-    background: #0E141B;
-    color: #0E141B;
+    background: var(--background);
+    color: var(--text-dark);
     font-family: 'Nunito', sans-serif;
     /* font-size:16px;; */
 }
 
 a {
-    color: lightblue;
+    color: var(--text-light-saturated);
 }
 
 .button-container {
@@ -23,11 +23,13 @@ a {
 .title {
     /* font-size: 7em; */
     /* margin: 10px; */
-    color: lightgray;
+    color: var(--text-light);
 }
 
 .title img {
     height:5em;
+    user-select: none;
+    --webkit-user-select:none;
 }
 
 input {
@@ -37,9 +39,8 @@ input {
 .button {
     align-self: center;
     margin-left: 10px;
-    cursor: pointer;
-    background: #34495E;
-    color: white;
+    background: var(--background-shader);
+    color: var(--text-light);
     outline: none;
     border: none;
     border-radius: 2px;
@@ -62,8 +63,8 @@ input {
 }
 
 .input {
-    background: #81d9ff;
-    color: #0E141B;
+    background: var(--primary);
+    color: var(--text-dark);
     width: 100%;
     border: none;
     font-size: 3em;
@@ -72,22 +73,22 @@ input {
 
 .input::placeholder {
     /* Chrome, Firefox, Opera, Safari 10.1+ */
-    color: #0E141B;
+    color: var(--text-dark);
     opacity: 0.7;
     /* Firefox */
 }
 
 .button:active {
-    background: #5D6D7E;
+    background: var(--background-shader-lighter);
 }
 
 .light-button {
-    background: #81d9ff;
-    color: #0E141B;
+    background: var(--primary);
+    color: var(--text-dark);
 }
 
 .light-button:active {
-    background: white;
+    background: var(--primary-lighter);
 }
 
 .place-in-line {
@@ -100,8 +101,9 @@ input {
     display: flex;
     flex-flow: column;
     margin-bottom: 1em;
-    background: #34495E;
-    /* align-items:center; */
+    background: var(--background-shader-darker);
+    border:1px solid var(--primary);
+        /* align-items:center; */
     /* justify-content:center; */
     width: 30%;
     /* border:1px solid white; */
@@ -127,25 +129,14 @@ input {
     justify-content: space-around;
 }
 
-button {
-    text-decoration: none;
-    padding: 10px;
-    cursor: pointer;
-    background: #34495E;
-    border-radius: 3px;
-    display: flex;
-    font-size: 40px;
-    /* border:1px solid lightgray; */
-}
-
 .error {
-    color: rgb(222, 116, 116);
+    color: var(--error);
     font-size: 2em;
     text-align: center;
 }
 
 .success {
-    color: rgb(138, 203, 138);
+    color: var(--success);
     font-size: 2em;
     text-align: center;
 }
@@ -154,21 +145,20 @@ button {
     font-size: 40px;
 }
 
-input {
+/* input {
     color: white;
     background: #3e3e3e;
     border: 1px solid lightgray;
     border-radius: 1px;
     padding: 4px;
-}
+} */
 
 hr {
-    background: gray;
-    border: 1px solid gray;
+    border: 1px solid var(--text-light-saturated);
 }
 
 .white-divider {
-    border-top: 0.6em solid white;
+    border-top: 0.6em solid var(--text-light);
     margin-bottom: 3em;
     border-bottom: none;
     background: none;
@@ -186,7 +176,7 @@ hr {
     /* display:flex; */
     text-align: center;
     /* justify-self: center; */
-    color: white;
+    color: var(--text-lighter);
     font-size: 4.5em;
     padding-bottom: 1em;
 }
@@ -205,5 +195,5 @@ hr {
     flex-flow: row;
     justify-content: space-between;
     align-items: center;
-    color: lightgray;
+    color: var(--text-light);
 }

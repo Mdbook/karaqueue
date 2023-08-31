@@ -48,11 +48,11 @@
 }
 
 .sortable-chosen {
-    background: #7FB3D5;
+    background: var(--primary-lighter);
 }
 
 .inactive {
-    background: rgb(114, 72, 72);
+    background: var(--inactive);
     color: var(--text-light-darker);
 }
 
@@ -192,7 +192,7 @@ li {
     }
 
     &:checked+.tgl-btn {
-        background: #9FD6AE;
+        background: var(--accent-select);
     }
 }
 

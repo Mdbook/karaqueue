@@ -15,5 +15,8 @@
     --primary-lighter: #E4B365;
     --accent-select: #BA8DC8;
     --accent-select-lighter: #DAAAE9;
+    --error: rgb(222, 116, 116);
+    --success: rgb(138, 203, 138);
+    --inactive:rgb(114, 72, 72);
   }
   

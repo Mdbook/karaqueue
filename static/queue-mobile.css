@@ -31,32 +31,38 @@
 .queue-item {
     cursor: move;
     /* border-radius:0.5em; */
-    background: #81d9ff;
+    background: var(--primary);
     display: flex;
     justify-content: space-between;
     align-self: center;
-    border-left: 1em solid #4b8097;
-    border-right: 1em solid #81d9ff;
+    border-left: 1em solid var(--primary-darker);
+    border-right: 1em solid var(--primary);
     padding: 1em;
     font-size: 40px;
     /* border:1px solid gray; */
     margin: 5px;
-    width: 80%;
+    width: 100%;
 }
 
 /* .queue-item:hover {
     background:#91deff;
 } */
 .sortable-chosen {
-    background: #7FB3D5;
-    border-right: 1em solid #7FB3D5;
+    background: var(--primary-lighter);
+    border-right: 1em solid var(--primary-lighter);
+    /* width:80%; */
 
 }
 
 .inactive {
-    background: rgb(35, 24, 24);
-    border-right:1em solid rgb(35, 24, 24);
-    color: lightgray;
+    background: var(--inactive);
+    border-right:1em var(--inactive);
+    color: var(--text-light-darker);
+}
+
+.inactive:active {
+    background: rgb(90, 57, 57);
+    color: var(--text-light-darker);
 }
 
 .hidden {
@@ -95,8 +101,8 @@ button {
 }
 
 .active {
-    background: #adf8cc;
-    border-right: 1em solid #adf8cc;
+    background: var(--accent-select);
+    border-right: 1em solid var(--accent-select);
 }
 
 /* .active:hover {
@@ -107,10 +113,10 @@ button {
 }
 
 .sortable-ghost {
-    color: #212F3D;
-    background: #212F3D;
-    border-left: 1em solid #212F3D;
-    border-right: 1em solid #212F3D;
+    color: var(--background);
+    background: var(--background);
+    border-left: 1em solid var(--background);
+    border-right: 1em solid var(--background);
 }
 
 .small-button {
@@ -121,7 +127,7 @@ button {
     text-align: center;
     margin-right: 1em;
     font-size: 3em;
-    color: lightgray;
+    color: var(--text-light-darker);
     margin-bottom: 1em;
 }
 
@@ -198,10 +204,36 @@ li {
     }
 
     &:checked+.tgl-btn {
-        background: #9FD6AE;
+        background: var(--accent-select);
     }
 }
 
 .display-hidden {
     display: none;
+}
+
+#queue-container {
+    min-height: 10em;
+    max-height: 80em;
+}
+
+.scrollable-inner {
+    overflow-y: scroll;
+    max-height: 100%;
+}
+
+#queue_list .queue-item {
+    padding-top: 0.2em;
+    padding-bottom: 0.2em;
+    width:60%;
+}
+
+#queue-control {
+    position: fixed;
+    background: #0E141B;
+    z-index: 10;
+}
+#user_queue_list {
+    width:80%;
+    /* border-right: 2em solid var(--primary); */
 }

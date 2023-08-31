@@ -1,11 +1,11 @@
 .item {
     /* border-radius:0.5em; */
     cursor: pointer;
-    background: #81d9ff;
+    background: var(--primary);
     display: flex;
     justify-content: space-between;
     align-self: center;
-    border-left: 1em solid #4b8097;
+    border-left: 1em solid var(--primary-darker);
     padding: 1em;
     font-size: 2em;
     /* border:1px solid gray; */
@@ -21,7 +21,7 @@
     /* color:white; */
     user-select: none;
     -webkit-user-select: none;
-    background-color: #5fa3c0;
+    background-color: var(--primary-darker);
     padding: 0.5em;
     margin-left: 0.5em;
 }

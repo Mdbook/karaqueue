@@ -27,6 +27,9 @@ a {
 
 .title img {
     height:4em;
+    cursor:pointer;
+    user-select: none;
+    --webkit-user-select:none;
 }
 input {
     margin: 5px;
@@ -37,7 +40,7 @@ input {
     margin-left: 10px;
     cursor: pointer;
     background: var(--background-shader);
-    color: white;
+    color: var(--text-light);
     outline: none;
     border: none;
     border-radius: 2px;
@@ -48,7 +51,6 @@ input {
     font-size: 14;
     user-select: none;
     -webkit-user-select: none;
-    /* border:1px solid lightgray; */
 }
 
 .input {
@@ -108,24 +110,15 @@ input {
     justify-content: space-around;
 }
 
-button {
-    text-decoration: none;
-    padding: 10px;
-    cursor: pointer;
-    background: #34495E;
-    border-radius: 3px;
-    display: flex;
-    font-size: 40px;
-    /* border:1px solid lightgray; */
-}
+
 
 .error {
-    color: rgb(222, 116, 116);
+    color: var(--error);
     text-align: center;
 }
 
 .success {
-    color: rgb(138, 203, 138);
+    color: var(--success);
     text-align: center;
 }
 
@@ -133,16 +126,15 @@ button {
     font-size: 40px;
 }
 
-input {
+/* input {
     color: white;
     background: #3e3e3e;
     border: 1px solid lightgray;
     border-radius: 1px;
     padding: 4px;
-}
+} */
 
 hr {
-    background: black;
     border: 1px solid var(--text-light-saturated);
 }
 
