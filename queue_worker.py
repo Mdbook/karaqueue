@@ -3,11 +3,11 @@ from flask_socketio import send, emit, disconnect
 from socket_worker import socketapp, authenticated_only, admin_only, delete_user
 from flask import session
 from karaqueue import KaraQueue
+
 Queue = KaraQueue()
 # DEFAULT_QUEUE = "{\"order\":[],\"list\":{},\"inactive\":[],\"hidden\":[],\"active\":\"None\"}"
 if os.path.exists(Queue.path):
     Queue.Load()
-
 
     # f = open("data/queue.json", "w")
     # f.write(DEFAULT_QUEUE)
@@ -52,41 +52,42 @@ def update_queue():
     socketapp.emit("Queue Update", Queue.Export())
 
 
-@socketapp.on('Add Song for User')
+@socketapp.on("Add Song for User")
 @admin_only
 def add_for_user(data):
-    username = data['username']
-    song = data['song']
-    artist = data['artist']
+    username = data["username"]
+    song = data["song"]
+    artist = data["artist"]
     Queue.Request(username, song, artist)
     update_queue()
 
-@socketapp.on('init_queue')
+
+@socketapp.on("init_queue")
 @admin_only
 def init(username):
     print('User "' + username + '" connected is viewing queue.')
-    emit('Queue Init', Queue.Export(), json=True, broadcast=False)
+    emit("Queue Init", Queue.Export(), json=True, broadcast=False)
 
-@socketapp.on('init_user_queue')
+
+@socketapp.on("init_user_queue")
 @authenticated_only
 def init_user():
-    print('User "' + session['username'] + '" connected is viewing queue.')
-    username = session['username']
-    ret = {
-        "username":username,
-        "songs":Queue.GetSongs(username)
-    }
+    print('User "' + session["username"] + '" connected is viewing queue.')
+    username = session["username"]
+    ret = {"username": username, "songs": Queue.GetSongs(username)}
     # print(ret)
-    emit('User Update Response', ret, broadcast=False)
+    emit("User Update Response", ret, broadcast=False)
 
-@socketapp.on('clear_queue')
+
+@socketapp.on("clear_queue")
 @admin_only
 def clear_queue():
     print("Clearing the queue")
     Queue.Wipe()
     socketapp.emit("Queue Update", Queue.Export())
 
-@socketapp.on('Change User Order')
+
+@socketapp.on("Change User Order")
 @admin_only
 def change_order(data):
     print("Received order change")
@@ -94,17 +95,19 @@ def change_order(data):
     Queue.Rearrange(new_order)
     update_queue()
 
-@socketapp.on('Change Song Order')
+
+@socketapp.on("Change Song Order")
 @authenticated_only
 def change_order(data):
     print("Received user song order change")
     order = json.loads(data)
-    user = order['user']
-    if session['admin'] or session['username'] == user:
-        Queue.ReorderUserSongs(order['user'], order['list'])
+    user = order["user"]
+    if session["admin"] or session["username"] == user:
+        Queue.ReorderUserSongs(order["user"], order["list"])
         update_queue()
     else:
         print("Auth error")
+
 
 # def change_order(data):
 #     global queue
@@ -134,28 +137,28 @@ def change_order(data):
 #         print("Auth error")
 
 
-@socketapp.on('Get User')
+@socketapp.on("Get User")
 @authenticated_only
 def get_user(username):
-    if session['admin'] or session['username'] == username:
-        ret = {
-            "username":username,
-            "songs":Queue.GetSongs(username)
-        }
+    if session["admin"] or session["username"] == username:
+        ret = {"username": username, "songs": Queue.GetSongs(username)}
         # print(ret)
-        emit('User Update Response', ret, broadcast=False)
+        emit("User Update Response", ret, broadcast=False)
 
-@socketapp.on('Delete Song')
+
+@socketapp.on("Delete Song")
 @authenticated_only
 def delete_song(data):
-    if session['admin'] or session['username'] == data['user']:
-        usr = data['user']
-        Queue.DeleteSong(data['user'], data['id'])
+    if session["admin"] or session["username"] == data["user"]:
+        usr = data["user"]
+        Queue.DeleteSong(data["user"], data["id"])
         if Queue.Active(usr):
             Queue.Next()
             if Queue.Active(usr):
                 Queue.ClearActive()
         update_queue()
+
+
 # def delete_song(data):
 #     global queue
 #     if session['admin'] or session['username'] == data['user']:
@@ -176,13 +179,15 @@ def delete_song(data):
 #         # TODO: add case for when num songs = 0
 #         print("Deleted song " + song_id)
 #         update_queue()
-        # emit('User Update Response', ret, broadcast=False)
+# emit('User Update Response', ret, broadcast=False)
 
-@socketapp.on('Show or Hide User')
+
+@socketapp.on("Show or Hide User")
 @admin_only
 def showhide_user(username):
     Queue.ToggleHidden(username)
     update_queue()
+
 
 @socketapp.on("Singer Update")
 @admin_only
@@ -193,11 +198,12 @@ def singer_update(code):
         Queue.Prev()
     update_queue()
 
+
 @socketapp.on("Request Order Status")
 @authenticated_only
 def requested_order_status(username):
-    if session['admin'] or session['username'] == username:
-        emit('Order Status', get_order_data(), broadcast=False)
+    if session["admin"] or session["username"] == username:
+        emit("Order Status", get_order_data(), broadcast=False)
 
 
 # def next_singer():
@@ -224,20 +230,20 @@ def requested_order_status(username):
 #     queue['active'] = validSingers[currentIndex]
 #     update_queue()
 
+
 def update_order():
     print(Queue.GetActiveUsers())
     socketapp.emit("Order Status", get_order_data())
 
+
 def get_order_data():
     order = Queue.GetActiveUsers()
     singer = Queue.get_active()
-    data = {
-        "singer":singer,
-        "order":order
-    }
+    data = {"singer": singer, "order": order}
     return data
 
-@socketapp.on('delete')
+
+@socketapp.on("delete")
 def delete(uname):
     socketapp.emit("Force Logout", uname)
     delete_user(uname)
