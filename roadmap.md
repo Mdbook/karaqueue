@@ -5,6 +5,7 @@
 - [x] Allow pausing of submissions
 - [x] CSS Color standardization w global variables
 - [ ] Input sanitization
+- [ ] Character limit for usernames
 - [ ] More admin features
 - [ ] More admin UI fixes
 - [ ] Kiosk song submission mode (/kiosk)

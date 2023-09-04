@@ -99,11 +99,26 @@ def queue():
         return render_template("queue.html")
 
 
+@app.route("/kiosk")
+def kiosk():
+    return render_template("kiosk/index.html")
+
+
+@app.route("/kiosk/<path:path>")
+def kiosk_sub(path):
+    if path == "request":
+        return render_template("kiosk/request.html")
+    if path == "logout":
+        session["logged_in"] = False
+        return render_template("kiosk/index.html")
+    return render_template("kiosk/index.html")
+
+
 @app.route("/request", methods=["GET", "POST"])
 @authenticated_only
 def requestsong():
-    if (Queue.IsPaused()):
-        return render_template('paused.html')
+    if Queue.IsPaused():
+        return render_template("paused.html")
     if request.method == "GET":
         return render_template("request.html")
     else:
