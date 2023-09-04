@@ -3,7 +3,7 @@
 - [x] Object Oriented Programming rewrite
 - [ ] Make usernames not case sensitive when logging in
 - [ ] Allow pausing of submissions
-- [ ] CSS Color standardization w global variables
+- [x] CSS Color standardization w global variables
 - [ ] Input sanitization
 - [ ] More admin features
 - [ ] More admin UI fixes
