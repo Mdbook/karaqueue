@@ -2,7 +2,7 @@
 - [x] Admin UI fixes
 - [x] Object Oriented Programming rewrite
 - [ ] Make usernames not case sensitive when logging in
-- [ ] Allow pausing of submissions
+- [x] Allow pausing of submissions
 - [x] CSS Color standardization w global variables
 - [ ] Input sanitization
 - [ ] More admin features
