@@ -30,6 +30,10 @@ function addSong() {
   });
 }
 
+function toggle_pause() {
+  socket.emit("pause");
+}
+
 function clear_queue() {
   if (confirm("Are you sure you want to completely clear the queue?")) {
     socket.emit("clear_queue");
@@ -114,7 +118,14 @@ function pushNewSongOrder(order) {
 
 function iterate(queue) {
   clearQueueList();
-  console.log(Object.keys(queue["list"]).length);
+  if (queue["paused"]) {
+    document.getElementById("pause-play-status").innerText = "Resume Queue";
+    document.getElementById("pause-play-img").src = "/static/assets/play.png";
+  } else {
+    document.getElementById("pause-play-status").innerText = "Pause Queue";
+    document.getElementById("pause-play-img").src = "/static/assets/pause.png";
+  }
+  // console.log(Object.keys(queue["list"]).length);
   // userlist = document.getElementById('user_list')
   if (queue["order"].length >= 1) {
     for (let i in queue["order"]) {

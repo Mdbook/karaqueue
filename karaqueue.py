@@ -54,7 +54,7 @@ class User:
         self.Lock()
         try:
             newarr = []
-            # TODO not quite sure about this algorithm;
+            # not quite sure about this algorithm;
             # if something breaks it's probably this
             while len(new_order) > 0:
                 for song in self.songs:
@@ -92,6 +92,7 @@ class KaraQueue:
         self.path = "data/queue.json"
         self.lock = threading.Lock()
         self.file_lock = threading.Lock()
+        self.paused = False
 
     def load(self, data: dict):
         if "order" in data.keys():
@@ -110,6 +111,10 @@ class KaraQueue:
             self.list = {}
         if "inactive" in data.keys():
             self.inactive = data["inactive"]
+        else:
+            self.inactive = []
+        if "paused" in data.keys():
+            self.paused = data["paused"]
         else:
             self.inactive = []
         if "hidden" in data.keys():
@@ -163,6 +168,24 @@ class KaraQueue:
     def Unlock(self):
         self.lock.release()
 
+    def Pause(self):
+        self.Lock()
+        self.paused = True
+        self.Unlock()
+
+    def Unpause(self):
+        self.Lock()
+        self.paused = False
+        self.Unlock()
+
+    def TogglePause(self):
+        self.Lock()
+        self.paused = not self.paused
+        self.Unlock()
+
+    def IsPaused(self):
+        return self.paused
+
     def export(self):
         l = {}
         for username in self.list.keys():
@@ -176,6 +199,7 @@ class KaraQueue:
             "songs_played": self.songs_played,
             "songs_requested": self.songs_requested,
             "users_requested": self.users_requested,
+            "paused": self.paused,
         }
         return data
 
@@ -287,7 +311,7 @@ class KaraQueue:
     def is_valid_singer(self, name: str):
         return name in self.get_active_users()
 
-    def next_valid_after(self, name: str):  # TODO bug:
+    def next_valid_after(self, name: str):
         uname = name
         index = self.order.index(uname)
         while not self.is_valid_singer(uname):
@@ -299,7 +323,6 @@ class KaraQueue:
 
     def Next(self):
         self.Lock()
-        # TODO: add case for when currently up user becomes inactive
         try:
             validSingers = self.get_active_users()
             if len(validSingers) == 1:

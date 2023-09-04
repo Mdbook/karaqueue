@@ -43,6 +43,16 @@
   width: 80%;
 }
 
+.pause-play-btn {
+  display: flex;
+}
+
+#pause-play-img {
+  height: 1em;
+  display: flex;
+  align-self: center;
+  margin-right: 0.5em;
+}
 .queue-item:hover {
   background: var(--primary-lighter);
 }

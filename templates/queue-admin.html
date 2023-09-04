@@ -16,6 +16,10 @@ if request.MOBILE %}
   <div class="button" onclick="clear_queue()">Clear Queue</div>
   <div class="button" onclick="prev_singer()">Prev Singer</div>
   <div class="button" onclick="next_singer()">Next Singer</div>
+  <div class="button pause-play-btn" onclick="toggle_pause()">
+    <img src="/static/assets/pause.png" id="pause-play-img" />
+    <span id="pause-play-status"> Pause Queue </span>
+  </div>
 </div>
 <br />
 {% endif %}<br /><br />

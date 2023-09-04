@@ -28,12 +28,6 @@ def authenticated_only(f):
     return wrapped
 
 
-# TODO delete this when done with testing
-@app.route("/pause")
-def paused():
-    return render_template("paused.html")
-
-
 @app.route("/")
 def home():
     """Session control"""
@@ -108,6 +102,8 @@ def queue():
 @app.route("/request", methods=["GET", "POST"])
 @authenticated_only
 def requestsong():
+    if (Queue.IsPaused()):
+        return render_template('paused.html')
     if request.method == "GET":
         return render_template("request.html")
     else:

@@ -69,6 +69,13 @@ def init(username):
     emit("Queue Init", Queue.Export(), json=True, broadcast=False)
 
 
+@socketapp.on("pause")
+@admin_only
+def pause():
+    Queue.TogglePause()
+    update_queue()
+
+
 @socketapp.on("init_user_queue")
 @authenticated_only
 def init_user():
@@ -176,7 +183,6 @@ def delete_song(data):
 #                 if queue['active'] == data['user']:
 #                     queue['active'] = None
 #             queue['inactive'].append(data['user'])
-#         # TODO: add case for when num songs = 0
 #         print("Deleted song " + song_id)
 #         update_queue()
 # emit('User Update Response', ret, broadcast=False)

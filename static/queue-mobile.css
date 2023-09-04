@@ -6,6 +6,10 @@
   width: 100%;
 }
 
+.pause-play-btn {
+  height: 2em;
+}
+
 .trash-icon {
   height: 40px;
   display: flex;
